@@ -140,3 +140,15 @@ textarea::placeholder {
   padding-top: 3px;
   font-size: 14px;
 }
+
+:root {
+  --primary-color: #DFB916;
+    --icon-color: black;
+}
+
+
+/* Background color utility */
+.bg-yellow {
+  background-color: var(--primary-color) !important;
+  color: #000 !important;
+}

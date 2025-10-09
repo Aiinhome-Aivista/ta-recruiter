@@ -1,6 +1,8 @@
 .main-section {
-  background: url("/assets/icons/HMLoginBG.svg"),
-    linear-gradient(117.21deg, #141414 80.75%, #484848 149.51%);
+
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    /* dark overlay */ url("/assets/icons/r-bg.svg"),
+    linear-gradient(117.21deg, #141414, #484848 149.51%);
 
   background-size: cover;
   // background-position: bottom center;

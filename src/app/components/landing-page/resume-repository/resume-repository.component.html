@@ -8,8 +8,8 @@
   <div *ngIf="!isLoading" class="h-100">
     <div class="header">
       <h1>Resume Repository</h1>
-      <div class="add-button" (click)="addResume()">
-        <img class="add-icon" src="assets/icons/+.svg" alt="add" />
+      <div class="add-button bg-yellow" (click)="addResume()">
+        <img class="add-icon " src="assets/icons/+.svg" alt="add" />
       </div>
     </div>
 
@@ -22,7 +22,7 @@
           (click)="setActiveJob(job)"
         >
           <h3>Job ID: #{{ job.job_id }}</h3>
-          <h2>{{ getJobTitle(job.JD) }}</h2>
+          <h2>{{ job.JD?.['Job Title'] }}</h2>
           <p>
             <img src="assets/icons/user-resumes.svg" alt="user" />
             {{ job.HiringManagerId }}
