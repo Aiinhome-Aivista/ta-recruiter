@@ -1,0 +1,169 @@
+.container {
+  width: 100%;
+  height: calc(100vh - 2rem - 8vh);
+  margin: auto;
+  padding: 1.35rem;
+  overflow: hidden;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 7rem;
+    margin-bottom: 1rem;
+
+    h1 {
+      font-size: 1.1875rem;
+      font-weight: 500;
+      color: #ffffff;
+    }
+  }
+
+  .add-button {
+    background-color: #8b04f5;
+    color: white;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .add-icon {
+    width: 0.8rem;
+    height: 0.8rem;
+  }
+
+  .job-container {
+    height: calc(100% - 8%);
+    overflow-y: auto;
+    background: linear-gradient(137.88deg, #1d212a 21.56%, #272c37 100%);
+    border-radius: 0.625rem;
+    padding-top: 1rem;
+  }
+
+  .job-item {
+    padding: 0.75rem 1.5rem;
+    // padding-right: 6rem !important;
+    transition: background-color 0.3s;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+    h3 {
+      font-size: 0.6875rem;
+      // line-height: 18px;
+      margin-bottom: 0.1rem !important;
+      font-weight: 400;
+      color: rgba(161, 161, 161, 1);
+    }
+
+    h2 {
+      font-size: 0.875rem;
+      font-weight: 500;
+      // line-height: 20px;
+      color: rgba(255, 255, 255, 1);
+    }
+
+    p {
+      padding-top: 0.5rem;
+      display: flex;
+      font-size: 13px;
+      line-height: 18px;
+      font-weight: 500;
+      gap: 0.45rem;
+      color: rgba(241, 241, 241, 1);
+
+      img {
+        border-radius: 50%;
+        height: 1.125rem;
+        width: 1.125rem;
+      }
+    }
+  }
+
+  .job-item.active {
+    background-color: #2a3e5b;
+    // border-radius: 4px;
+    border-bottom: none;
+  }
+}
+
+/* Media Queries for Different Screen Sizes */
+@media (min-width: 1020px) and (max-width: 1285px) {
+  .container {
+    padding: 1rem !important;
+  }
+
+  .header {
+    gap: 4rem !important;
+
+    h1 {
+      font-size: 1rem !important;
+    }
+  }
+
+  .add-button {
+    width: 2.2rem !important;
+    height: 2rem !important;
+  }
+
+  .job-item {
+    padding: 0.75rem 1rem !important;
+    h3 {
+      font-size: 0.68rem !important;
+    }
+    h2 {
+      font-size: 0.75rem !important;
+    }
+    p {
+      font-size: 10px !important;
+    }
+  }
+}
+
+@media (min-width: 1600px) and (max-width: 1799px) {
+  .container {
+    padding: 2.5rem 1.5rem !important;
+  }
+
+  .header {
+    gap: 8rem !important;
+    h1 {
+      font-size: 1.25rem !important;
+    }
+  }
+
+  .job-item {
+    padding: 1rem 2rem !important;
+    h2 {
+      font-size: 1rem !important;
+    }
+  }
+}
+
+@media (min-width: 1800px) and (max-width: 1980px) {
+  .container {
+    padding: 2.25rem !important;
+  }
+
+  .header {
+    gap: 9rem !important;
+
+    h1 {
+      font-size: 1.375rem !important;
+    }
+  }
+
+  .add-button {
+    width: 3rem !important;
+    height: 2.5rem !important;
+  }
+
+  .job-item {
+    padding: 1rem 2.5rem !important;
+    h2 {
+      font-size: 1.125rem !important;
+    }
+  }
+}

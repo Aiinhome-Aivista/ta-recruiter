@@ -1,0 +1,142 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import "primeicons/primeicons.css";
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default padding */
+ul[class],
+ol[class] {
+  padding: 0;
+}
+
+/* Remove default margin */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul[class],
+ol[class],
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd,
+p {
+  margin: 0 !important;
+}
+
+/* Set core body defaults */
+body {
+  min-height: 100vh;
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+  font-family: "Inter", sans-serif !important;
+  font-optical-sizing: auto;
+  font-style: normal;
+  background-image: url(/assets/icons/candidateBG.svg);
+  // background-size: cover;
+  background-position: center;
+  font-variation-settings: "wdth" 100;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+body,
+::after,
+::before {
+  box-sizing: border-box !important;
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
+/* Remove list styles on ul, ol elements with a class attribute */
+ul[class],
+ol[class] {
+  list-style: none;
+}
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+
+/* Make images easier to work with */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Natural flow and rhythm in articles by default */
+article > * + * {
+  margin-top: 1em;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+// ================== Scroll Styles ================= //
+
+::-webkit-scrollbar {
+  width: 0.45vw;
+  height: 0.8vh;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+  // border-radius: 1rem;
+  background-color: #373737;
+}
+
+::-webkit-scrollbar-track:horizontal {
+  background: #373737;
+}
+::-webkit-scrollbar-thumb:horizontal {
+  background: #8a8a8a;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #8a8a8a;
+
+  // border-radius: 1rem;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #8a8a8a;
+  width: 0.5vw; /* Increase the width */
+  height: 1.6vh;
+}
+
+//-------added by rabi-----------------
+textarea {
+  resize: vertical;
+  background: #131313;
+  border-radius: 4px;
+  border: 1px solid #424b57;
+  resize: none !important;
+}
+
+textarea:focus {
+  outline: none;
+  border: 1px solid #424b57;
+}
+textarea::placeholder {
+  color: #bdbdbd;
+  padding-left: 5px;
+  padding-top: 3px;
+  font-size: 14px;
+}

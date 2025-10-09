@@ -1,0 +1,22 @@
+.resume-repository {
+  padding: 1rem 2rem;
+  display: grid;
+  // grid-template-columns: auto 1fr;
+  grid-template-columns: 1fr 2.8fr;
+  grid-template-areas: "resume candidate";
+  height: 100%;
+  height: 100%;
+  background-image: url(../../../../public/assets/icons/HMBG.svg);
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+  overflow-y: hidden;
+  // gap: 1rem;
+
+  .left-part {
+    grid-area: resume;
+  }
+  .right-part {
+    grid-area: candidate;
+  }
+}

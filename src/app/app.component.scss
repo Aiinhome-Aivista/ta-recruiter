@@ -1,0 +1,27 @@
+.main-container {
+  // height: 100vh;
+  background-color: #0a0a0a;
+
+  .header {
+    height: 7vh;
+    background-color: #0a0a0a;
+    padding: 0 1rem;
+    color: #ffffff;
+    img {
+      height: 21px;
+    }
+    .user-icon {
+      background-color: #868686;
+      border-radius: 50%;
+    }
+    p {
+      font-size: 16px;
+      font-weight: 600;
+    }
+  }
+
+  .main {
+    height: 93vh;
+    // overflow-y: hidden;
+  }
+}

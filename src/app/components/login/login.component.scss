@@ -1,0 +1,125 @@
+.main-section {
+  background: url("/assets/icons/HMLoginBG.svg"),
+    linear-gradient(117.21deg, #141414 80.75%, #484848 149.51%);
+
+  background-size: cover;
+  // background-position: bottom center;
+  background-repeat: no-repeat;
+  // height: 100vh;
+  width: 100vw;
+  background-attachment: fixed;
+
+  .logo-img {
+    top: 4%;
+    left: 2%;
+  }
+
+  .login-container {
+    padding-top: 6rem;
+  }
+}
+
+.logo-wel {
+  .logo {
+    background-color: #9747ff;
+    border-radius: 50%;
+    padding: 1.5rem;
+    align-content: center;
+  }
+
+  .title {
+    font-size: 2.5rem;
+  }
+}
+.sub-title {
+  font-size: 22px;
+  font-weight: 400;
+  color: #dfdfdf;
+}
+
+.form-group {
+  label {
+    font-size: 16px;
+    font-weight: 500;
+    padding-bottom: 0.5rem;
+    span {
+      color: red;
+    }
+  }
+
+  .email-input {
+    background-color: #131313;
+    color: #fff;
+    border-color: #424b57;
+    width: 100%;
+
+    &::placeholder {
+      color: rgb(145, 145, 145);
+    }
+  }
+}
+
+.btn-login {
+  margin: 1rem 0;
+  width: 100%;
+  background-color: #8b04f5;
+  color: #fff;
+  padding: 0.6rem 0;
+}
+.btm-footer {
+  bottom: 2%;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+@media (min-height: 600px) and (max-height: 800px) {
+  .logo-wel {
+    .title {
+      font-size: 2rem;
+    }
+  }
+  .sub-title {
+    font-size: 18px;
+  }
+  .form-group label {
+    font-size: 14px;
+  }
+
+  .form-control {
+    font-size: 0.8rem;
+  }
+  .btn-login {
+    margin: 1rem 0;
+    padding: 0.5rem 0;
+    font-size: 0.8rem;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1436px) {
+  .card-body {
+    gap: 1.5rem !important;
+  }
+
+  .logo-wel {
+    .title {
+      font-size: 2rem;
+    }
+  }
+  .sub-title {
+    font-size: 18px;
+  }
+
+  .form-group label {
+    font-size: 14px;
+  }
+  .form-control {
+    font-size: 0.8rem;
+  }
+
+  .btn-login {
+    margin: 1rem 0;
+    padding: 0.5rem 0;
+    font-size: 0.8rem;
+  }
+}

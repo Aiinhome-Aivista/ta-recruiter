@@ -1,0 +1,100 @@
+<div class="candidates-container">
+  <div
+    *ngIf="loading"
+    class="d-flex justify-content-center align-items-center h-100"
+  >
+    <p-progress-spinner strokeWidth="2" fill="transparent" />
+  </div>
+
+  <div *ngIf="!loading">
+    <div class="header">
+      <p>Job ID: #{{ selectedJob.jobId }}</p>
+      <h3>{{ selectedJob.jobTitle }}</h3>
+      <div class="c-info">
+        <div class="c-name">
+          <img [src]="'assets/icons/r-logo.svg'" alt="My Image" />
+          <h4>{{ selectedJob.email }}</h4>
+        </div>
+        <span class="pi pi-sync" (click)="refreshList()"> </span>
+      </div>
+    </div>
+    <hr />
+
+    <div class="List">List of Candidates</div>
+    <!-- Candidate List -->
+    <div *ngIf="activeTab === 'Shortlisted'" class="main-candisate-card">
+      <div *ngIf="shortlistedCandidates.length > 0; else noDataTemplate">
+        <div
+          *ngFor="let candidate of shortlistedCandidates"
+          class="candidate-card"
+        >
+          <div class="candidate-info">
+            <div class="left-part">
+              <h3>
+                {{ candidate?.name }}
+              </h3>
+              <div class="star" *ngIf="candidate.rating">
+                <div class="rating">
+                  <img [src]="'assets/icons/starIcon.svg'" alt="My Image" />
+                </div>
+                <div class="text">{{ candidate.rating }}</div>
+              </div>
+              <div
+                *ngIf="candidate.status"
+                class="status"
+                [ngClass]="{
+                  assessment: candidate.status === 'Assessment Pending',
+                  'ai-screening-pending':
+                    candidate.status === 'AI Screening Pending',
+                  'interview-pending':
+                    candidate.status === 'Interview Scheduled',
+                  'meeting-panding':
+                    candidate.status === 'Teams Meeting Pending',
+                  'inactive-status': candidate.status === 'Inactive',
+                  faild: candidate.status === 'Failed in Assessment',
+                  completed: candidate.status === 'Interview Completed',
+                  'not-selected':
+                    candidate.status === 'Not Selected in Interview',
+                  selected: candidate.status === 'Selected'
+                }"
+              >
+                {{ candidate?.status }}
+              </div>
+            </div>
+            <div class="experience" *ngIf="candidate.experience">
+              {{ candidate?.experience }} <span>years of experience</span>
+            </div>
+          </div>
+
+          <div class="skills">
+            <!-- Show only the first 2 skills -->
+            <div
+              *ngFor="let skill of candidate?.skills?.slice(0, 2)"
+              class="skill"
+            >
+              {{ skill }}
+            </div>
+
+            <!-- Show "+count" if there are more than 2 skills -->
+            <div
+              *ngIf="candidate.skills.length > 2"
+              class="skill-pill2"
+              pTooltip="{{ getAdditionalSkills(candidate.skills) }}"
+              tooltipPosition="top"
+            >
+              +{{ candidate.skills.length - 2 }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #noDataTemplate>
+      <div class="no-data">No data found</div>
+    </ng-template>
+  </div>
+
+  <!-- <div class=" position-absolute top-0 end-0 popup-content">
+      <app-candidate-info *ngIf="selectedCandidate" [candidate]="selectedCandidate"
+        (click)="closeModall($event)"></app-candidate-info>
+    </div> -->
+</div>

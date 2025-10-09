@@ -1,0 +1,22 @@
+<div class="main-container">
+  <!-- Header -->
+  <div
+    class="header d-flex align-items-center justify-content-between"
+    *ngIf="showHeader"
+  >
+    <div class="left d-flex align-items-center gap-3">
+      <img src="assets/icons/Logo_TS.svg" alt="" />
+      <p>Home</p>
+    </div>
+    <div class="right">
+      <div>
+        <img src="assets/icons/darkUser.svg" alt="" class="user-icon" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+    <router-outlet />
+  </div>
+</div>
