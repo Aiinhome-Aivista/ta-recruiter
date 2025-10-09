@@ -18,43 +18,53 @@ export class CandidateListComponent implements OnInit {
   allCandidates: any[] = [];
   shortlistedCandidates: any[] = [];
   loading: boolean = false;
-  constructor(private recruiterService: RecruiterService) {}
+  constructor(private recruiterService: RecruiterService) { }
 
   ngOnInit() {
-    this.fetchShortlistedCandidates();
     this.jobSubscription = this.recruiterService.selectedJob$.subscribe(
       (job) => {
         this.selectedJob = job;
-        this.filterCandidatesByJob();
+        if (this.selectedJob) {
+          this.fetchShortlistedCandidates();
+        }
       }
     );
   }
+
+
 
   fetchShortlistedCandidates() {
-    this.loading = true;
-    this.recruiterService.getShortlistedCandidates().subscribe(
-      (data: any) => {
-        // Transform API data
-        this.allCandidates = data.map((candidate: any) => ({
-          name: [candidate.FirstName, candidate.MiddleName, candidate.LastName]
-            .filter(Boolean)
-            .join(' '),
-          rating: candidate.Star,
-          status: candidate.LatestStatus,
-          experience: candidate.Experience,
-          skills: candidate.Skills.split(','),
-          jobId: candidate.JobId,
-        }));
+    if (!this.selectedJob) return;
 
-        this.filterCandidatesByJob();
-        this.loading = false;
-      },
-      (error) => {
-        console.error('Error fetching shortlisted candidates:', error);
-        this.loading = false;
-      }
-    );
+    console.log("print this", this.selectedJob);
+    this.loading = true;
+    this.recruiterService.getShortlistedCandidates(this.selectedJob.jobId)
+      .subscribe(
+        (data: any) => {
+          this.allCandidates = data.result.map((candidate: any) => ({
+            name: [candidate.first_name, candidate.middle_name, candidate.last_name]
+              .filter(Boolean)
+              .join(' '),
+            rating: candidate.star,
+            status: candidate.latestStatus,
+            experience: candidate.experience,
+            skills: candidate.skills.split(','),
+            jobId: candidate.jobId,
+            email: candidate.email,
+            latestRole: candidate.latestrole,
+            education: candidate.education
+          }));
+          this.filterCandidatesByJob();
+          this.loading = false;
+        },
+        (error) => {
+          console.error('Error fetching shortlisted candidates:', error);
+          this.loading = false;
+        }
+      );
   }
+
+
 
   filterCandidatesByJob() {
     this.shortlistedCandidates = this.allCandidates.filter((candidate: any) => {

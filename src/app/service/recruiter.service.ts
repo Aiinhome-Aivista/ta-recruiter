@@ -7,7 +7,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class RecruiterService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   private selectedJobSubject = new BehaviorSubject<any>(null);
   selectedJob$ = this.selectedJobSubject.asObservable();
@@ -38,11 +38,17 @@ export class RecruiterService {
     return this.http.get(GETurls.getJobDetails);
   }
 
-  getShortlistedCandidates() {
-    return this.http.get(GETurls.getShortlistedCandidates);
+  getShortlistedCandidates(jobId: number) {
+    return this.http.get(GETurls.getShortlistedCandidates(jobId));
   }
 
-  searchHMByJobId(jobId: string) {
-    return this.http.get(`${GETurls.searchHMByJobId}?jobId=${jobId}`);
+
+  // searchHMByJobId(jobId: string) {
+  //   return this.http.get(`${GETurls.searchHMByJobId}?jobId=${jobId}`);
+  // }
+  // service
+  searchHMByJobId(id: string) {
+    return this.http.post(`${GETurls.searchHMByJobId}`, { id });
   }
+
 }

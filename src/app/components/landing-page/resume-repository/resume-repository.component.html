@@ -21,11 +21,11 @@
           [ngClass]="{ active: job.active }"
           (click)="setActiveJob(job)"
         >
-          <h3>Job ID: #{{ job.JobId }}</h3>
+          <h3>Job ID: #{{ job.job_id }}</h3>
           <h2>{{ getJobTitle(job.JD) }}</h2>
           <p>
             <img src="assets/icons/user-resumes.svg" alt="user" />
-            {{ job.HMEmailId }}
+            {{ job.HiringManagerId }}
           </p>
         </div>
       </div>

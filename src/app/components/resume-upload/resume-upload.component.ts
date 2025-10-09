@@ -56,7 +56,7 @@ export class ResumeUploadComponent implements OnInit {
     private recruiterService: RecruiterService,
     private messageService: MessageService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.setupJobSelectionListener();
@@ -66,11 +66,12 @@ export class ResumeUploadComponent implements OnInit {
         switchMap((query) => this.recruiterService.searchHMByJobId(query))
       )
       .subscribe((data: any) => {
-        this.filteredJobs = data.map((item: any) => ({
-          id: item.JobId.toString(),
-          title: item.HMEmailId,
+        this.filteredJobs = data.result.map((item: any) => ({
+          id: item.Id.toString(),
+          title: item.HiringManagerId,
         }));
       });
+
   }
 
   private setupJobSelectionListener(): void {
@@ -173,15 +174,6 @@ export class ResumeUploadComponent implements OnInit {
     }
   }
 
-  // filterJob(event: any): void {
-  //   const query = event.query.toLowerCase();
-  //   this.filteredJobs = this.dummyJobData.filter(
-  //     (job) =>
-  //       job.id.toLowerCase().includes(query) ||
-  //       job.title.toLowerCase().includes(query)
-  //   );
-  // }
-
   filterJob(event: any): void {
     const query = event.query.toLowerCase();
     this.searchQuery$.next(query);
@@ -191,10 +183,10 @@ export class ResumeUploadComponent implements OnInit {
     if (!this.validateInputs()) {
       return;
     }
-    
+
     const recruiterEmail = 'testHR@email.com';
     this.loading = true;
-    
+
     this.recruiterService
       .uploadCVs(this.hiringManagerId, this.hiringManager, this.uploadedFiles)
       .subscribe({

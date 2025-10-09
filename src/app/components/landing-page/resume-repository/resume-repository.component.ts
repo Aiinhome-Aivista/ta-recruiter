@@ -15,7 +15,7 @@ export class ResumeRepositoryComponent implements OnInit {
   constructor(
     private router: Router,
     private recruiterService: RecruiterService
-  ) {}
+  ) { }
   jobs: any[] = [];
   isLoading: boolean = false;
 
@@ -26,7 +26,7 @@ export class ResumeRepositoryComponent implements OnInit {
     this.isLoading = true;
     this.recruiterService.getJobDetails().subscribe(
       (data: any) => {
-        this.jobs = data;
+        this.jobs = data.result;
         if (this.jobs.length > 0) {
           this.jobs[0].active = true;
           this.setActiveJob(this.jobs[0]);
@@ -51,10 +51,17 @@ export class ResumeRepositoryComponent implements OnInit {
   setActiveJob(selectedJob: any) {
     const jobTitle = this.getJobTitle(selectedJob.JD);
     this.recruiterService.setSelectedJob(
-      selectedJob.JobId,
+      selectedJob.job_id,
       jobTitle,
-      selectedJob.HMEmailId
+      selectedJob.HiringManagerId
     );
+
+    // Console log the selected job
+    console.log('Selected Job:', {
+      jobId: selectedJob.job_id,
+      jobTitle: jobTitle,
+      HMEmailId: selectedJob.HiringManagerId
+    });
 
     this.jobs.forEach((job) => (job.active = false));
     selectedJob.active = true;
