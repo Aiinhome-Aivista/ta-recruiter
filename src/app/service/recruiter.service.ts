@@ -7,7 +7,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class RecruiterService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   private selectedJobSubject = new BehaviorSubject<any>(null);
   selectedJob$ = this.selectedJobSubject.asObservable();
@@ -17,21 +17,34 @@ export class RecruiterService {
     this.selectedJobSubject.next(jobDetails);
   }
 
-  uploadCVs(jobId: string, recruiterEmail: string, files: File[]) {
+  // uploadCVs(jobId: string, recruiterEmail: string, files: File[]) {
+  //   const formData = new FormData();
+  //   files.forEach((file) => {
+  //     formData.append('CVs', file, file.name);
+  //   });
+
+  //   const headers = new HttpHeaders({
+  //     accept: '/',
+  //   });
+
+  //   return this.http.post(
+  //     `${POSTurls.uploadCVs}?JobId=${jobId}&RecruiterEmail=${recruiterEmail}`,
+  //     formData,
+  //     { headers }
+  //   );
+  // }
+
+  uploadCVs(jobId: string, hiringManagerId: string, files: File[]) {
     const formData = new FormData();
-    files.forEach((file) => {
-      formData.append('CVs', file, file.name);
-    });
+    files.forEach((file) => formData.append('files', file, file.name));
 
-    const headers = new HttpHeaders({
-      accept: '/',
-    });
+    // Append IDs as part of form-data instead of query params
+    formData.append('job_id', jobId);
+    formData.append('HiringManagerId', hiringManagerId);
 
-    return this.http.post(
-      `${POSTurls.uploadCVs}?JobId=${jobId}&RecruiterEmail=${recruiterEmail}`,
-      formData,
-      { headers }
-    );
+    const headers = new HttpHeaders({ accept: '/' });
+
+    return this.http.post(POSTurls.uploadCVs, formData, { headers });
   }
 
   getJobDetails() {
@@ -42,7 +55,6 @@ export class RecruiterService {
     return this.http.get(GETurls.getShortlistedCandidates(jobId));
   }
 
-
   // searchHMByJobId(jobId: string) {
   //   return this.http.get(`${GETurls.searchHMByJobId}?jobId=${jobId}`);
   // }
@@ -50,5 +62,4 @@ export class RecruiterService {
   searchHMByJobId(id: string) {
     return this.http.post(`${GETurls.searchHMByJobId}`, { id });
   }
-
 }
