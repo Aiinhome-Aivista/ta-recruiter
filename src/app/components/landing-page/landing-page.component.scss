@@ -6,7 +6,10 @@
   grid-template-areas: "resume candidate";
   height: 100%;
   height: 100%;
-  background-image: url(../../../../public/assets/icons/HMBG.svg);
+  // background-image: url(../../../../public/assets/icons/HMBG.svg);
+  background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+    /* dark overlay */ url("/assets/icons/bg-dashboard.svg"),
+    linear-gradient(117.21deg, #141414, #484848 149.51%);
   background-size: cover;
   background-position: center;
   width: 100%;
