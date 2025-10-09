@@ -62,7 +62,7 @@ export class ResumeUploadComponent implements OnInit {
     this.setupJobSelectionListener();
     this.searchQuery$
       .pipe(
-        debounceTime(1000),
+        debounceTime(1500),
         switchMap((query) => this.recruiterService.searchHMByJobId(query))
       )
       .subscribe((data: any) => {
