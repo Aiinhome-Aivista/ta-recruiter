@@ -4,7 +4,7 @@
   let baseUrl = 'http://122.163.121.176:3008/'
 
 export const POSTurls = {
-  uploadCVs: baseUrl + 'UploadCandidateCVs',
+  uploadCVs: baseUrl + 'RecruiterMicroservices/recruiter_upload_cv',
 };
 
 export const GETurls = {
@@ -13,3 +13,4 @@ export const GETurls = {
   getJobDetails: baseUrl + 'RecruiterMicroservices/GetJobDetais',
   searchHMByJobId: baseUrl + 'RecruiterMicroservices/getjobsearch',
 };
+
