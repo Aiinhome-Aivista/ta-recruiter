@@ -9,11 +9,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.3rem;
     margin-bottom: 1rem;
 
     h1 {
-      font-size: 1.1875rem;
+      font-size: 1rem;
       font-weight: 500;
       color: #ffffff;
     }
@@ -81,7 +81,7 @@
     background-color: #8b04f5;
     color: white;
     border-radius: 0.5rem;
-    padding: 0.5rem;
+    padding: 0.75rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -191,7 +191,6 @@
   }
 
   .header {
-    gap: 4rem !important;
 
     h1 {
       font-size: 1rem !important;
@@ -223,9 +222,9 @@
   }
 
   .header {
-    gap: 8rem !important;
+    // gap: 8rem !important;
     h1 {
-      font-size: 1.25rem !important;
+      font-size: 1rem !important;
     }
   }
 
@@ -237,13 +236,12 @@
   }
 }
 
-@media (min-width: 1800px) and (max-width: 1980px) {
+@media (min-width: 1800px)  {
   .container {
     padding: 2.25rem !important;
   }
 
   .header {
-    gap: 9rem !important;
 
     h1 {
       font-size: 1.375rem !important;
