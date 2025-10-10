@@ -67,6 +67,30 @@
   background-color: #8b04f5;
   color: #fff;
   padding: 0.6rem 0;
+  border: none;
+  transition: all 0.3s ease;
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: #7603d1;
+  }
+}
+
+.alert {
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+
+  &.alert-danger {
+    background-color: rgba(220, 53, 69, 0.1);
+    border: 1px solid rgba(220, 53, 69, 0.3);
+    color: #dc3545;
+  }
 }
 .btm-footer {
   bottom: 2%;

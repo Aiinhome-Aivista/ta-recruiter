@@ -1,7 +1,20 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { GETurls, POSTurls } from '../config';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
+
+export interface LoginResponse {
+  isSuccess: boolean;
+  message: string;
+  result: {
+    Id: number;
+    IsHiringManager: string;
+    UserId: string;
+    email: string;
+  };
+  status: string;
+  statusCode: number;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -12,9 +25,59 @@ export class RecruiterService {
   private selectedJobSubject = new BehaviorSubject<any>(null);
   selectedJob$ = this.selectedJobSubject.asObservable();
 
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.hasValidToken());
+  isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+
+  private currentUserSubject = new BehaviorSubject<any>(this.getCurrentUser());
+  currentUser$ = this.currentUserSubject.asObservable();
+
   setSelectedJob(jobId: number, jobTitle: string, email: string) {
     const jobDetails = { jobId, jobTitle, email };
     this.selectedJobSubject.next(jobDetails);
+  }
+
+  // Authentication methods
+  login(email: string): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(POSTurls.loginRecruiter, { email }).pipe(
+      tap((response) => {
+        if (response.isSuccess) {
+          this.setAuthData(response.result);
+        }
+      })
+    );
+  }
+
+  private setAuthData(userData: any): void {
+    localStorage.setItem('recruiterToken', JSON.stringify(userData));
+    localStorage.setItem('isAuthenticated', 'true');
+    this.isAuthenticatedSubject.next(true);
+    this.currentUserSubject.next(userData);
+  }
+
+  private hasValidToken(): boolean {
+    const token = localStorage.getItem('recruiterToken');
+    const isAuth = localStorage.getItem('isAuthenticated');
+    return !!(token && isAuth === 'true');
+  }
+
+  private getCurrentUser(): any {
+    const userData = localStorage.getItem('recruiterToken');
+    return userData ? JSON.parse(userData) : null;
+  }
+
+  isAuthenticated(): boolean {
+    return this.isAuthenticatedSubject.value;
+  }
+
+  logout(): void {
+    localStorage.removeItem('recruiterToken');
+    localStorage.removeItem('isAuthenticated');
+    this.isAuthenticatedSubject.next(false);
+    this.currentUserSubject.next(null);
+  }
+
+  getCurrentUserData(): any {
+    return this.currentUserSubject.value;
   }
 
   // uploadCVs(jobId: string, recruiterEmail: string, files: File[]) {

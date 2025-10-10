@@ -1,16 +1,33 @@
 <div class="main-container">
   <!-- Header -->
   <div
-    class="header d-flex align-items-center justify-content-between"
+    class="header d-flex align-items-center px-5 justify-content-between"
     *ngIf="showHeader"
   >
     <div class="left d-flex align-items-center gap-3">
       <img src="assets/icons/logo-CrewNest.svg" alt="" />
       <p>Home</p>
     </div>
-    <div class="right">
-      <div>
+    <div class="right" *ngIf="isAuthenticated">
+      <div class="user-info" *ngIf="currentUser">
+        <span class="user-email">{{ currentUser.email }}</span>
+      </div>
+      <div
+        class="user-profile-container"
+        (click)="toggleDropdown()"
+      >
         <img src="assets/icons/darkUser.svg" alt="" class="user-icon" />
+        <div class="user-dropdown" *ngIf="showDropdown">
+          <div
+            class="dropdown-item"
+            (click)="logout()"
+          >
+            <span class="logout-icon"
+              ><img src="assets/icons/logout.svg" alt=""
+            /></span>
+            <span>Logout</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>

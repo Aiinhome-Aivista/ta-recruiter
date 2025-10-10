@@ -29,15 +29,21 @@
             id="email"
             placeholder="Email"
             [(ngModel)]="email"
+            [disabled]="isLoading"
           />
+        </div>
+        <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+          {{ errorMessage }}
         </div>
         <button
           type="button"
           (click)="login()"
           class="btn btn-login bg-yellow d-flex align-items-center justify-content-center"
+          [disabled]="isLoading"
         >
-          Login with SSO
-          <img src="assets/icons/fi_arrow_right_black.svg" alt="" class="ps-1" />
+          <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+          {{ isLoading ? 'Logging in...' : 'Login with SSO' }}
+          <img *ngIf="!isLoading" src="assets/icons/fi_arrow_right_black.svg" alt="" class="ps-1" />
         </button>
       </div>
     </div>

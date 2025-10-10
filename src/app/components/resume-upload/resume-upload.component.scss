@@ -5,7 +5,8 @@
   // flex-direction: column;
   // width: 80%;
   height: 100%;
-  background-image: url(../../../../public/assets/icons/HMBG.svg);
+  // background-image: url(/assets/icons/bg-4.jpeg);
+  background: var(--dark-gradient);
   background-size: cover;
   background-position: center;
   display: grid;
@@ -183,6 +184,7 @@
           .file-name {
             display: -webkit-box;
             -webkit-line-clamp: 1;
+            line-clamp: 1;
             -webkit-box-orient: vertical;
             overflow: hidden;
             font-size: 0.7rem;

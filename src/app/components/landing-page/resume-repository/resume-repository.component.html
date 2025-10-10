@@ -8,15 +8,60 @@
   <div *ngIf="!isLoading" class="h-100">
     <div class="header">
       <h1>Resume Repository</h1>
-      <div class="add-button bg-yellow" (click)="addResume()">
-        <img class="add-icon " src="assets/icons/+.svg" alt="add" />
+      <div class="max-width">
+        <div class="search-container">
+          <div class="search-icon">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle cx="11" cy="11" r="8" stroke="#888" stroke-width="2" />
+              <path
+                d="m21 21-4.35-4.35"
+                stroke="#888"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+            </svg>
+          </div>
+          <input 
+            type="text" 
+            placeholder="Search by Job ID, Title, or Manager" 
+            class="search-input"
+            [(ngModel)]="searchQuery"
+            (input)="onSearch($event)"
+          />
+          <div class="clear-button" (click)="clearSearch()" *ngIf="searchQuery">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M18 6L6 18M6 6l12 12"
+                stroke="#888"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="add-button bg-yellow p-3" (click)="addResume()">
+        <img class="add-icon" src="assets/icons/+.svg" alt="add" />
       </div>
     </div>
 
     <div class="job-container">
-      <div class="job-list">
+      <div class="job-list h-100">
         <div
-          *ngFor="let job of jobs"
+          *ngFor="let job of filteredJobs"
           class="job-item"
           [ngClass]="{ active: job.active }"
           (click)="setActiveJob(job)"
@@ -27,6 +72,13 @@
             <img src="assets/icons/icon-face.svg" alt="user" />
             {{ job.HiringManagerId }}
           </p>
+        </div>
+        
+        <!-- No results message -->
+        <div *ngIf="filteredJobs.length === 0 && searchQuery" class="no-results h-100">
+          <img src="assets/icons/No Results.svg" alt="No results" class="no-results-icon" />
+          <p>No jobs found for "{{ searchQuery }}"</p>
+          <button class="clear-search-btn bg-yellow mt-2" (click)="clearSearch()">Clear Search</button>
         </div>
       </div>
     </div>

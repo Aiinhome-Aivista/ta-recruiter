@@ -396,3 +396,18 @@
     }
   }
 }
+
+
+.no-job-selected {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+
+  p {
+    color: #bcbcbc;
+    font-size: 1rem;
+    font-weight: 400;
+    text-align: center;
+  }
+}
