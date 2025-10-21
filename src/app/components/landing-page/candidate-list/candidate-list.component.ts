@@ -1,23 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RecruiterService } from '../../../service/recruiter.service';
 import { TooltipModule } from 'primeng/tooltip';
 import { Subscription } from 'rxjs';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+
 @Component({
   selector: 'app-candidate-list',
   standalone: true,
   imports: [CommonModule, TooltipModule, ProgressSpinnerModule],
   templateUrl: './candidate-list.component.html',
-  styleUrl: './candidate-list.component.scss',
+  styleUrls: ['./candidate-list.component.scss'],
 })
-export class CandidateListComponent implements OnInit {
+export class CandidateListComponent implements OnInit, OnDestroy {
   activeTab: string = 'Shortlisted';
   selectedJob: any = null;
   private jobSubscription!: Subscription;
   allCandidates: any[] = [];
   shortlistedCandidates: any[] = [];
   loading: boolean = false;
+  jobDescription: any = null;
+  jobDescriptionLoading: boolean = false;
+
   constructor(private recruiterService: RecruiterService) { }
 
   ngOnInit() {
@@ -26,17 +30,16 @@ export class CandidateListComponent implements OnInit {
         this.selectedJob = job;
         if (this.selectedJob) {
           this.fetchShortlistedCandidates();
+          this.fetchJobDescription();
         }
       }
     );
   }
 
-
-
+  // === Fetch Shortlisted Candidates (existing) ===
   fetchShortlistedCandidates() {
     if (!this.selectedJob) return;
 
-    console.log("print this", this.selectedJob);
     this.loading = true;
     this.recruiterService.getShortlistedCandidates(this.selectedJob.jobId)
       .subscribe(
@@ -64,8 +67,6 @@ export class CandidateListComponent implements OnInit {
       );
   }
 
-
-
   filterCandidatesByJob() {
     this.shortlistedCandidates = this.allCandidates.filter((candidate: any) => {
       return candidate.jobId === this.selectedJob.jobId;
@@ -76,13 +77,46 @@ export class CandidateListComponent implements OnInit {
     return skills.slice(2).join(', ');
   }
 
+  // === Fetch Job Description from API ===
+  fetchJobDescription() {
+    if (!this.selectedJob) return;
+
+    this.jobDescriptionLoading = true;
+    this.recruiterService.getJobDescription(this.selectedJob.jobId)
+      .subscribe({
+        next: (response: any) => {
+          if (response?.isSuccess && response.jd) {
+            const jd = response.jd;
+
+            this.jobDescription = {
+              ...jd,
+              'Key Responsibilities': jd['Key Responsibilities'] ? jd['Key Responsibilities'].split('\n') : [],
+              'Desired Skills': jd['Desired Skills'] ? jd['Desired Skills'].split('\n') : [],
+              'Qualifications': jd['Qualifications'] ? jd['Qualifications'].split('\n') : [],
+              'Benefits': jd['Benefits'] || []
+            };
+          } else {
+            this.jobDescription = null;
+          }
+          this.jobDescriptionLoading = false;
+        },
+        error: (err) => {
+          console.error('Error fetching job description', err);
+          this.jobDescription = null;
+          this.jobDescriptionLoading = false;
+        }
+      });
+  }
+
+
+  refreshList() {
+    this.fetchShortlistedCandidates();
+    this.fetchJobDescription();
+  }
+
   ngOnDestroy() {
     if (this.jobSubscription) {
       this.jobSubscription.unsubscribe();
     }
-  }
-
-  refreshList() {
-    this.fetchShortlistedCandidates();
   }
 }

@@ -12,7 +12,12 @@ export const POSTurls = {
 export const GETurls = {
   getShortlistedCandidates: (jobId: number) => 
     `${baseUrl}JobServices/ShortListed/${jobId}`,
+
+  getJobDescriptionData: (jobId: number) => 
+    `${baseUrl}JobServices/job_description/${jobId}`,
   getJobDetails: baseUrl + 'RecruiterMicroservices/GetJobDetais',
   searchHMByJobId: baseUrl + 'RecruiterMicroservices/getjobsearch',
+
+  jobSearch: baseUrl + 'RecruiterMicroservices/jobsearch',
 };
 

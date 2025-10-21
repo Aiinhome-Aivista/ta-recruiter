@@ -1,8 +1,5 @@
 <div class="candidates-container">
-  <div
-    *ngIf="loading"
-    class="d-flex justify-content-center align-items-center h-100"
-  >
+  <div *ngIf="loading" class="d-flex justify-content-center align-items-center h-100">
     <p-progress-spinner strokeWidth="2" fill="transparent" />
   </div>
 
@@ -18,83 +15,154 @@
         <span class="pi pi-sync" (click)="refreshList()"> </span>
       </div>
     </div>
+
     <hr />
 
-    <div class="List">List of Candidates</div>
-    <!-- Candidate List -->
-    <div *ngIf="activeTab === 'Shortlisted'" class="main-candisate-card">
-      <div *ngIf="shortlistedCandidates.length > 0; else noDataTemplate">
-        <div
-          *ngFor="let candidate of shortlistedCandidates"
-          class="candidate-card"
-        >
-          <div class="candidate-info">
-            <div class="left-part">
-              <h3>
-                {{ candidate?.name }}
-              </h3>
-              <div class="star" *ngIf="candidate.rating">
-                <div class="rating">
-                  <img [src]="'assets/icons/starIcon.svg'" alt="My Image" />
+    <!-- Navigation Tabs -->
+    <nav class="nav-bar mb-4 d-flex justify-content-between">
+      <div class="nav-btn">
+        <span class="nav-item" [class.activeTab]="activeTab === 'Shortlisted'" (click)="activeTab = 'Shortlisted'">
+          Candidates List
+        </span>
+        <span class="nav-item" [class.activeTab]="activeTab === 'JobDescription'"
+          (click)="activeTab = 'JobDescription'">
+          Job Description
+        </span>
+      </div>
+    </nav>
+
+    <!-- Candidates List Tab -->
+    <div *ngIf="activeTab === 'Shortlisted'">
+      <div class="List">List of Candidates</div>
+
+      <div class="main-candisate-card">
+        <div *ngIf="shortlistedCandidates.length > 0; else noDataTemplate">
+          <div *ngFor="let candidate of shortlistedCandidates" class="candidate-card">
+            <div class="candidate-info">
+              <div class="left-part">
+                <h3>{{ candidate?.name }}</h3>
+                <div class="star" *ngIf="candidate.rating">
+                  <div class="rating">
+                    <img [src]="'assets/icons/starIcon.svg'" alt="My Image" />
+                  </div>
+                  <div class="text">{{ candidate.rating }}</div>
                 </div>
-                <div class="text">{{ candidate.rating }}</div>
-              </div>
-              <div
-                *ngIf="candidate.status"
-                class="status"
-                [ngClass]="{
-                  assessment: candidate.status === 'Assessment Pending',
-                  'ai-screening-pending':
-                    candidate.status === 'AI Screening Pending',
-                  'interview-pending':
-                    candidate.status === 'Interview Scheduled',
-                  'meeting-panding':
-                    candidate.status === 'Teams Meeting Pending',
-                  'inactive-status': candidate.status === 'Inactive',
-                  faild: candidate.status === 'Failed in Assessment',
-                  completed: candidate.status === 'Interview Completed',
-                  'not-selected':
-                    candidate.status === 'Not Selected in Interview',
-                  selected: candidate.status === 'Selected'
-                }"
-              >
-                {{ candidate?.status }}
-              </div>
-            </div>
-            <div class="experience" *ngIf="candidate.experience">
-              {{ candidate?.experience }} <span>years of experience</span>
-            </div>
-          </div>
 
-          <div class="skills">
-            <!-- Show only the first 2 skills -->
-            <div
-              *ngFor="let skill of candidate?.skills?.slice(0, 2)"
-              class="skill"
-            >
-              {{ skill }}
+                <div *ngIf="candidate.status" class="status" [ngClass]="{
+                    assessment: candidate.status === 'Assessment Pending',
+                    'ai-screening-pending':
+                      candidate.status === 'AI Screening Pending',
+                    'interview-pending':
+                      candidate.status === 'Interview Scheduled',
+                    'meeting-panding':
+                      candidate.status === 'Teams Meeting Pending',
+                    'inactive-status': candidate.status === 'Inactive',
+                    faild: candidate.status === 'Failed in Assessment',
+                    completed: candidate.status === 'Interview Completed',
+                    'not-selected':
+                      candidate.status === 'Not Selected in Interview',
+                    selected: candidate.status === 'Selected'
+                  }">
+                  {{ candidate?.status }}
+                </div>
+              </div>
+
+              <div class="experience" *ngIf="candidate.experience">
+                {{ candidate?.experience }} <span>years of experience</span>
+              </div>
             </div>
 
-            <!-- Show "+count" if there are more than 2 skills -->
-            <div
-              *ngIf="candidate.skills.length > 2"
-              class="skill-pill2"
-              pTooltip="{{ getAdditionalSkills(candidate.skills) }}"
-              tooltipPosition="top"
-            >
-              +{{ candidate.skills.length - 2 }}
+            <div class="skills">
+              <div *ngFor="let skill of candidate?.skills?.slice(0, 2)" class="skill">
+                {{ skill }}
+              </div>
+
+              <div *ngIf="candidate.skills.length > 2" class="skill-pill2"
+                pTooltip="{{ getAdditionalSkills(candidate.skills) }}" tooltipPosition="top">
+                +{{ candidate.skills.length - 2 }}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <ng-template #noDataTemplate>
-      <div class="no-data">No data found</div>
-    </ng-template>
-  </div>
 
-  <!-- <div class=" position-absolute top-0 end-0 popup-content">
-      <app-candidate-info *ngIf="selectedCandidate" [candidate]="selectedCandidate"
-        (click)="closeModall($event)"></app-candidate-info>
-    </div> -->
+      <ng-template #noDataTemplate>
+        <div class="no-data">No data found</div>
+      </ng-template>
+    </div>
+
+    <!-- Job Description Tab -->
+    <div *ngIf="activeTab === 'JobDescription'" class="main-candisate-card">
+      <ng-container *ngIf="jobDescription; else noJobDescription">
+        <div class="job-description-content">
+
+          <!-- Role -->
+          <div *ngIf="jobDescription['Role']" class="jd-section">
+            <h5 class="jd-subtitle text-yellow">Role: {{ jobDescription["Role"] }}</h5>
+          </div>
+
+          <!-- Job Type and Location -->
+          <div *ngIf="jobDescription['Job Type'] || jobDescription['Location']" class="jd-section mb-2">
+            <p *ngIf="jobDescription['Job Type']" class="mb-2">
+              <strong class="text-yellow">Job Type:</strong>
+              {{ jobDescription["Job Type"] }}
+            </p>
+            <p *ngIf="jobDescription['Location']">
+              <strong class="text-yellow">Location:</strong>
+              {{ jobDescription["Location"] }}
+            </p>
+          </div>
+
+          <!-- Role Overview -->
+          <div *ngIf="jobDescription['Role Overview']" class="jd-section mb-2">
+            <h5 class="jd-subtitle text-yellow">Role Overview</h5>
+            <p>{{ jobDescription["Role Overview"] }}</p>
+          </div>
+
+          <!-- Key Responsibilities -->
+          <div *ngIf="jobDescription['Key Responsibilities']?.length > 0" class="jd-section mb-2">
+            <h5 class="jd-subtitle text-yellow">Key Responsibilities</h5>
+            {{ jobDescription["Key Responsibilities"] }}
+          </div>
+
+          <!-- Qualifications -->
+          <div *ngIf="jobDescription['Qualifications']?.length > 0" class="jd-section mb-2">
+            <h5 class="jd-subtitle text-yellow">Qualifications</h5>
+            {{ jobDescription["Qualifications"] }}
+          </div>
+
+          <!-- Desired Skills -->
+          <div *ngIf="jobDescription['Desired Skills']?.length > 0" class="jd-section mb-2">
+            <h5 class="jd-subtitle text-yellow">Desired Skills</h5>
+            {{ jobDescription["Desired Skills"] }}
+          </div>
+
+          <!-- Additional fields if they exist -->
+          <div *ngIf="jobDescription['Experience Required']" class="jd-section mb-2">
+            <h5 class="jd-subtitle text-yellow">Experience Required</h5>
+            <p>{{ jobDescription["Experience Required"] }}</p>
+          </div>
+
+          <div *ngIf="jobDescription['Salary Range']" class="jd-section mb-2">
+            <h5 class="jd-subtitle text-yellow">Salary Range</h5>
+            <p>{{ jobDescription["Salary Range"] }}</p>
+          </div>
+
+          <div *ngIf="jobDescription['Benefits']?.length > 0" class="jd-section mb-2">
+            <h5 class="jd-subtitle text-yellow">Benefits</h5>
+            <ul>
+              <li *ngFor="let benefit of jobDescription['Benefits']">
+                {{ benefit }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #noJobDescription>
+        <div class="no-data d-flex align-items-center justify-content-center h-100">
+          <div *ngIf="jobDescription === null">No Job Description available.</div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
 </div>

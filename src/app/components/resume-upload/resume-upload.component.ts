@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import {
   FormsModule,
@@ -8,6 +14,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 import { AutoComplete } from 'primeng/autocomplete';
 import { ToastModule } from 'primeng/toast';
 
@@ -15,8 +22,15 @@ import { RecruiterService } from '../../service/recruiter.service';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import * as mammoth from 'mammoth';
-import { debounceTime, switchMap } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import {
+  debounceTime,
+  switchMap,
+  distinctUntilChanged,
+  catchError,
+  map,
+} from 'rxjs/operators';
+import { Subject, Subscription, of } from 'rxjs';
+
 interface Job {
   id: string;
   title: string;
@@ -30,7 +44,7 @@ interface Job {
     FormsModule,
     ReactiveFormsModule,
     InputTextModule,
-    AutoComplete,
+    AutoCompleteModule,
     ToastModule,
     ProgressSpinnerModule,
   ],
@@ -38,7 +52,9 @@ interface Job {
   styleUrls: ['./resume-upload.component.scss'],
   providers: [MessageService],
 })
-export class ResumeUploadComponent implements OnInit {
+export class ResumeUploadComponent implements OnInit, OnDestroy {
+  @ViewChild('ac') ac?: AutoComplete;
+
   hiringManager = '';
   hiringManagerId = '';
   filteredJobs: Job[] = [];
@@ -47,7 +63,11 @@ export class ResumeUploadComponent implements OnInit {
   showUploadError = false;
   cachedJobs: Job[] = [];
   loading: boolean = false;
+  pendingDropdownRequest = false;
+
   private searchQuery$ = new Subject<string>();
+  private searchSub?: Subscription;
+
   formGroup = new FormGroup({
     selectedJob: new FormControl<Job | null>(null),
   });
@@ -55,23 +75,51 @@ export class ResumeUploadComponent implements OnInit {
   constructor(
     private recruiterService: RecruiterService,
     private messageService: MessageService,
-    private router: Router
+    private router: Router,
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
     this.setupJobSelectionListener();
-    this.searchQuery$
+
+    this.searchSub = this.searchQuery$
       .pipe(
-        debounceTime(1500),
-        switchMap((query) => this.recruiterService.searchHMByJobId(query))
+        debounceTime(500),
+        distinctUntilChanged(),
+        switchMap((query) =>
+          this.recruiterService.jobSearch(query).pipe(
+            map((data: any) => {
+              const items = data?.result ?? data?.data ?? data ?? [];
+              return (items || []).map((item: any) => ({
+                id: (item.job_id ?? item.jobId ?? item.id ?? '').toString(),
+                title: item['Job Title'] ?? item.jobTitle ?? item.title ?? '',
+              })) as Job[];
+            }),
+            catchError((err) => {
+              console.error('jobSearch API error', err);
+              return of([] as Job[]);
+            })
+          )
+        )
       )
-      .subscribe((data: any) => {
-        this.filteredJobs = data.result.map((item: any) => ({
-          id: item.Id.toString(),
-          title: item.HiringManagerId,
-        }));
+      .subscribe((jobs: Job[]) => {
+        this.filteredJobs = jobs || [];
+        if (jobs?.length) this.cachedJobs = jobs;
+
+        if (this.pendingDropdownRequest) {
+          this.pendingDropdownRequest = false;
+          this.cd.detectChanges();
+          setTimeout(() => this.ac?.show(), 0);
+        } else {
+          this.cd.detectChanges();
+        }
       });
 
+
+  }
+
+  ngOnDestroy(): void {
+    this.searchSub?.unsubscribe();
   }
 
   private setupJobSelectionListener(): void {
@@ -79,11 +127,102 @@ export class ResumeUploadComponent implements OnInit {
       .get('selectedJob')
       ?.valueChanges.subscribe((value: Job | null) => {
         if (value) {
-          this.hiringManager = value.title;
-          this.hiringManagerId = value.id;
+          const selectedJobId = value.id;
+          this.hiringManagerId = selectedJobId;
+
+          // Now fetch Hiring Manager info for this job id using searchHMByJobId
+          this.recruiterService.searchHMByJobId(selectedJobId).subscribe({
+            next: (data: any) => {
+              const item =
+                (data?.result && data.result[0]) ??
+                (data?.data && data.data[0]) ??
+                data?.[0] ??
+                null;
+
+              if (item) {
+                this.hiringManager = item.HiringManagerId ?? item.hiringManager ?? '';
+                this.hiringManagerId = item.Id ?? selectedJobId;
+              } else {
+                this.hiringManager = '';
+                this.hiringManagerId = selectedJobId;
+              }
+            },
+            error: (err) => {
+              console.error('searchHMByJobId error', err);
+              this.hiringManager = '';
+              this.hiringManagerId = selectedJobId;
+            },
+          });
+        } else {
+          this.hiringManager = '';
+          this.hiringManagerId = '';
         }
       });
   }
+
+  // Called by p-autocomplete's completeMethod
+  filterJob(event: any): void {
+    const rawQuery = (event?.query ?? '').toString();
+    const query = rawQuery.trim();
+
+    if (!query) {
+      if (this.cachedJobs && this.cachedJobs.length > 0) {
+        this.filteredJobs = [...this.cachedJobs]; 
+        this.cd.detectChanges();
+      } else {
+        this.filteredJobs = [];
+        this.searchQuery$.next('');
+      }
+
+      setTimeout(() => {
+        try {
+          this.ac?.show();
+        } catch (err) {
+        }
+      }, 0);
+
+      return;
+    }
+
+    // If we already have cachedJobs, do fast client-side filter immediately for snappy UX
+    if (this.cachedJobs && this.cachedJobs.length > 0) {
+      const q = query.toLowerCase();
+      this.filteredJobs = this.cachedJobs.filter((job) =>
+        (job.title ?? '').toString().toLowerCase().includes(q) || String(job.id).includes(q)
+      );
+
+      // make sure overlay refreshes
+      this.cd.detectChanges();
+      setTimeout(() => {
+        try {
+          this.ac?.show();
+        } catch (err) {
+        }
+      }, 0);
+
+      return;
+    }
+
+    this.searchQuery$.next(query);
+  }
+
+  // Called when user clicks the dropdown arrow (wire (onDropdownClick)="onJobDropdownClick()" in template)
+  onJobDropdownClick(): void {
+    // If we have cached items, show them immediately
+    if (this.cachedJobs && this.cachedJobs.length > 0) {
+      this.filteredJobs = [...this.cachedJobs];
+      this.cd.detectChanges();
+      setTimeout(() => this.ac?.show(), 0);
+      return;
+    }
+
+    // No cache → request initial list but DO NOT open overlay yet
+    this.filteredJobs = [];
+    this.pendingDropdownRequest = true;
+    this.searchQuery$.next('');
+  }
+
+
 
   onFileSelected(event: Event): void {
     const target = event.target as HTMLInputElement;
@@ -172,11 +311,6 @@ export class ResumeUploadComponent implements OnInit {
     if (newWindow) {
       newWindow.document.write(content);
     }
-  }
-
-  filterJob(event: any): void {
-    const query = event.query.toLowerCase();
-    this.searchQuery$.next(query);
   }
 
   saveCVs(): void {

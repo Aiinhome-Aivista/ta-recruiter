@@ -25,11 +25,13 @@
       // font-size: clamp(0.85rem, 2vw, 1.15rem);
       font-weight: 500;
     }
+
     .c-info {
       margin-top: 1rem;
       display: flex;
       justify-content: space-between;
     }
+
     .c-name {
       display: flex;
       align-items: center;
@@ -62,14 +64,16 @@
 .nav-item {
   cursor: pointer;
   color: #aaa;
-  padding: 0.5rem 1rem;
+  padding: 0.3rem 1rem;
   border-bottom: 2px solid transparent;
+  font-size: 0.7rem !important;
   transition: color 0.3s ease, border-bottom 0.3s ease;
 }
 
 .nav-item.activeTab {
   color: rgba(255, 255, 255, 1);
-  border-bottom: 2px solid rgba(118, 127, 255, 1);
+  border-bottom: 2px solid var(--primary-color);
+  font-size: 0.8rem;
 }
 
 .main-candisate-card {
@@ -182,6 +186,7 @@
 .selected {
   background-color: #216521b2;
 }
+
 .ai-screening-pending,
 .interview-pending,
 .assessment {
@@ -196,6 +201,7 @@
 .inactive-status {
   background-color: #4d4d4db2;
 }
+
 .faild,
 .not-selected {
   background-color: #c42c2fb2;
@@ -250,6 +256,7 @@
   backdrop-filter: blur(5px);
   /* Blur effect */
 }
+
 @media (min-width: 1024px) and (max-width: 1436px) {
   .candidates-container {
     .header {
@@ -260,6 +267,7 @@
       h3 {
         font-size: 1rem !important;
       }
+
       .c-name {
         img {
           height: 1rem;
@@ -272,16 +280,20 @@
       }
     }
   }
+
   .List {
     font-size: 0.75rem;
   }
+
   .left-part {
     h3 {
       font-size: 0.85rem;
     }
   }
+
   .star {
     padding: 0.2rem 0.35rem;
+
     .rating img {
       height: 0.5rem;
       width: 0.5rem;
@@ -296,26 +308,31 @@
     padding: 2px 5px;
     font-size: 0.55rem;
   }
+
   .experience {
     font-size: 0.55rem;
   }
+
   .skills {
     .skill {
       padding: 3.25px 6.5px;
       font-size: 0.5rem;
     }
+
     .skill-pill2 {
       padding: 3.25px 6.5px;
       font-size: 0.5rem;
     }
   }
 }
+
 @media (min-width: 1224px) and (max-width: 1299px) {
   .main-candisate-card {
     max-height: calc(100vh - 40vh) !important;
     overflow-y: auto !important;
   }
 }
+
 @media (min-width: 1300px) and (max-width: 1436px) {
   .main-candisate-card {
     max-height: calc(100vh - 36vh) !important;
@@ -329,6 +346,7 @@
     overflow-y: auto !important;
   }
 }
+
 @media (min-width: 1500px) {
   .main-candisate-card {
     max-height: calc(100vh - 25vh) !important;
@@ -346,6 +364,7 @@
       h3 {
         font-size: 1rem !important;
       }
+
       .c-name {
         img {
           height: 1rem;
@@ -358,16 +377,20 @@
       }
     }
   }
+
   .List {
     font-size: 0.75rem;
   }
+
   .left-part {
     h3 {
       font-size: 0.85rem;
     }
   }
+
   .star {
     padding: 0.2rem 0.35rem;
+
     .rating img {
       height: 0.5rem;
       width: 0.5rem;
@@ -382,14 +405,17 @@
     padding: 2px 5px;
     font-size: 0.55rem;
   }
+
   .experience {
     font-size: 0.55rem;
   }
+
   .skills {
     .skill {
       padding: 3.25px 6.5px;
       font-size: 0.5rem;
     }
+
     .skill-pill2 {
       padding: 3.25px 6.5px;
       font-size: 0.5rem;
@@ -409,5 +435,97 @@
     font-size: 1rem;
     font-weight: 400;
     text-align: center;
+  }
+}
+
+.main-candisate-card {
+  height: calc(84vh - 9rem);
+  overflow-y: auto;
+}
+
+
+/* Job Description Styling */
+.job-description-content {
+  padding: 20px;
+  color: #ffffff;
+  line-height: 1.6;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255,
+      255,
+      255,
+      0.05);
+  /* Semi-transparent for dark glass effect */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  /* For cross-browser support */
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  border-radius: 0.5rem;
+  height: 100%;
+  overflow-y: auto;
+
+  .jd-section {
+    margin-bottom: 20px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .jd-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 10px;
+    text-align: center;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 10px;
+  }
+
+  .jd-subtitle {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    margin-top: 0;
+  }
+
+  p {
+    margin-bottom: 10px;
+    color: #e0e0e0;
+
+    strong {
+      color: #ffffff;
+    }
+  }
+
+  ul {
+    margin-left: 20px;
+    margin-bottom: 10px;
+
+    li {
+      margin-bottom: 8px;
+      color: #e0e0e0;
+      list-style-type: disc;
+
+      &::marker {
+        color: var(--primary-color);
+      }
+    }
+  }
+
+  .skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    .skill-tag {
+      background-color: var(--primary-color);
+      color: #ffffff;
+      padding: 6px 12px;
+      border-radius: 16px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      display: inline-block;
+    }
   }
 }

@@ -1,0 +1,636 @@
+.modal {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 450px;
+  height: 100%;
+  background-color: white;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+}
+
+.modal.open {
+  transform: translateX(0);
+}
+
+.loader_position {
+  height: 100pc;
+  margin-top: 25%;
+  margin-left: 85%;
+}
+
+.modal-content {
+  padding: 20px;
+  overflow-y: auto;
+}
+
+// .close {
+//     background-color: red;
+//     color: white;
+//     border: none;
+//     padding: 10px;
+//     cursor: pointer;
+// }
+
+.candidate-card {
+  background: #282828;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  width: 29rem;
+  // width: 100%;
+  color: white;
+  z-index: 1;
+
+  .star-pill {
+    display: flex;
+
+    h4 {
+      font-size: 22px;
+      font-weight: 500;
+    }
+
+    .rating {
+      margin-left: 1rem;
+      border-radius: 50px;
+      padding: 2px 12px;
+      border: 1px solid #767fff;
+      // color: #ffbf00;
+      font-size: 14px;
+      font-weight: 400;
+      align-items: center;
+      align-content: center;
+
+      img {
+        margin-right: 0.5rem;
+        width: 1rem;
+        height: 1rem;
+        object-fit: contain;
+      }
+    }
+  }
+
+  .contact-info {
+    color: #bdbdbd;
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  .timeline {
+    justify-content: center;
+  }
+
+  // .round {
+  //   border-radius: 50%;
+  //   height: 36px !important;
+  //   width: 36px !important;
+  //   // background-color: #8b04f5;
+  //   background-color: #424B57;
+  //   align-items: center;
+
+  //   display: flex;
+  //   justify-content: center;
+
+  // }
+
+  // .stapper {
+  //   align-items: center;
+  //   align-content: center;
+  // }
+
+  // .round img {
+  //   height: 21px;
+  //   width: 21px;
+  // }
+
+  // .line {
+  //   margin: auto 0;
+  //   border-top: 2px dotted #7086fd;
+  //   width: 6rem;
+  //   z-index: -1;
+  // }
+
+  // .interview-status {
+  //   font-size: 14px;
+  //   font-weight: 600;
+  // }
+
+  // .interview-status2 {
+  //   font-size: 12px;
+  //   font-weight: 400;
+  //   color: #dfac54;
+  // }
+
+  .timeline {
+    justify-content: space-between;
+    display: flex;
+    align-items: center; /* Ensures vertical alignment */
+  }
+
+  .timeline-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Ensures the line and circle align properly */
+  }
+
+  .round {
+    border-radius: 50%;
+    height: 36px !important;
+    width: 36px !important;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    z-index: 10;
+  }
+
+  .complete-round {
+    // background-color: #8b04f5;
+    background-color: #DFB916;
+  }
+
+  .pending-round, .interview-schedule-complete, .Scheduled-pending-round{
+    background-color: #424b57;
+  }
+  .failed-round {
+    background-color: #c9370a;
+  }
+
+  .line {
+    z-index: 7;
+    border-top: 2px dotted #7086fd;
+    width: 8.3rem;
+    position: relative;
+    top: -18px; /* Adjusts the line to align with the center of the circle */
+  }
+
+  .scroll-area {
+    padding-right: 0.5rem;
+    max-height: 70%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    // scrollbar-width: thin;
+  }
+
+  .stapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    // z-index: 5;
+    padding: 0.5rem 0;
+  }
+
+  .round img {
+    height: 21px;
+    width: 21px;
+  }
+
+  .info-submit-form{
+    font-size: 14px;
+  }
+
+  .interview-status {
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .complete-status {
+    color: #27ae60;
+  }
+
+  .pending-status, .interview-schedule-status {
+    color: #dfac54;
+  }
+
+  .notScheduled-status{
+    color:#dfac54;
+  }
+
+  .failed-status{
+    color: red;
+  }
+
+  .interview-status2 {
+    display: flex;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 400;
+  }
+
+  .interview-schedule {
+    display: flex;
+    border-radius: 10px;
+    border: 1px solid var(--primary-color);
+    align-items: center;
+    line-height: 24px;
+    padding: 1rem;
+    justify-content: space-between;
+    
+
+    p {
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    text-date {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    button {
+      align-items: center;
+      border-radius: 8px;
+      background-color: #8b04f5;
+      color: #e0e0e0;
+      height: 39px;
+      width: 106px;
+    }
+  }
+
+  .skill-card {
+    .file-icon {
+      align-items: center;
+
+      h6 {
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 27px;
+        color: #fff;
+      }
+
+      .icon {
+        background-color: #341c54;
+        border-radius: 50%;
+        padding: 0.3rem;
+        align-content: center;
+      }
+
+      h5 {
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 16.94px;
+        color: #e0e0e0;
+      }
+    }
+
+    .date-place {
+      font-size: 12px;
+      color: #bdbdbd;
+      font-weight: 400;
+    }
+
+    .skill-pill {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      font-size: 0.8rem;
+      border-radius: 60px;
+      padding: 0.3rem 0.8rem;
+      // background-color: #0f6cbd !important;
+    }
+
+    .hidden-skills {
+      top: -5rem;
+      left: 0;
+      z-index: 10;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+
+      .more-pill {
+        font-size: 0.8rem;
+        color: black;
+      }
+    }
+
+    .skill-pill2 {
+      border-radius: 50%;
+      padding: 8px 12px;
+      cursor: pointer;
+      background: rgba(84, 84, 84, 1);
+    }
+  }
+
+  .comment-section {
+    textarea {
+      margin-bottom: 3rem;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      background-color: #131313;
+      width: 100%;
+      color: #fff;
+      border: 1px solid #424b57;
+    }
+  }
+
+  h6 {
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  .badge {
+    font-size: 12px;
+    padding: 0.5em 0.75em;
+  }
+}
+
+.cross {
+  cursor: pointer;
+}
+
+.container1 {
+  overflow-y: hidden;
+}
+
+@media (min-height: 600px) and (max-height: 800px) {
+  .candidate-card {
+    .scroll-area {
+      max-height: 60%;
+    }
+    .star-pill {
+      h4 {
+        font-size: 20px !important;
+      }
+
+      .rating {
+        padding: 2px 10px !important;
+        font-size: 12px !important;
+
+        img {
+          width: 0.8rem !important;
+          height: 0.8rem !important;
+        }
+      }
+    }
+
+    .contact-info {
+      font-size: 12px !important;
+      img {
+        width: 0.8rem !important;
+        height: 0.8rem !important;
+      }
+    }
+  }
+}
+:host ::ng-deep .p-toast-summary {
+  display: none !important;
+}
+
+@media (min-width: 1024px) and (max-width: 1436px) {
+  .candidate-card {
+    .scroll-area {
+      max-height: 70%;
+    }
+    .star-pill {
+      h4 {
+        font-size: 20px !important;
+      }
+      .rating {
+        padding: 2px 10px !important;
+        font-size: 12px !important;
+
+        img {
+          width: 0.8rem !important;
+          height: 0.8rem !important;
+        }
+      }
+    }
+
+    .contact-info {
+      font-size: 12px !important;
+      margin-top: 1.2rem !important;
+      margin-bottom: 0.8rem !important;
+
+      img {
+        width: 1rem !important;
+        height: 1rem !important;
+      }
+    }
+  }
+}
+
+
+/* Progress Bar Custom Styles */
+.p-progressbar {
+  background-color: #2a2a2a !important;
+  border-radius: 8px !important;
+  height: 20px !important;
+  border: 1px solid #424b57 !important;
+  
+ 
+  
+  .p-progressbar-label {
+    color: #000000 !important;
+    font-weight: 600 !important;
+    font-size: 12px !important;
+    text-align: center !important;
+  }
+}
+
+/* Matching Percentage Section Styles */
+.matching-percentage-section {
+  padding: 12px 0;
+  
+  p {
+    color: #ffffff !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    margin-bottom: 8px !important;
+  }
+}
+
+ ::ng-deep .p-progressbar-value {
+    background-color: #dfb916 !important;
+    border-radius: 8px !important;
+    transition: width 0.6s ease-in-out !important;
+  }
+
+/* No Data Available Styling */
+.no-data-container {
+  padding: 2rem;
+  
+  .pi-exclamation-triangle {
+    color:  var(--primary-color) !important;
+    animation: pulse 2s infinite;
+  }
+  
+  h4 {
+    color: #ffffff !important;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  
+  p {
+    color: #9ca3af !important;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  
+  .btn-outline-light {
+    border-color: #6b7280;
+    color: #ffffff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background-color: #374151;
+      border-color: #9ca3af;
+      color: #ffffff;
+    }
+    
+    .pi-times {
+      font-size: 0.875rem;
+    }
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.cross {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  
+  &:hover {
+    transform: rotate(90deg);
+  }
+}
+
+
+::ng-deep .form-check .form-check-input:checked{
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+}
+
+.icon1{
+    width: 1.8rem;
+    display: flex;
+    border-radius: 50%;
+    padding: 0.4rem;
+    background: #341c54;
+    flex-direction: column;
+}
+
+::ng-deep.form-check-input[type=radio]{
+  cursor: pointer;
+}
+
+/* Interview Form Optimization Styles */
+.interview-sections {
+  .form-group {
+    margin-bottom: 1.5rem;
+    
+    .form-label {
+      color: #ffffff !important;
+      font-weight: 600 !important;
+      margin-bottom: 0.75rem !important;
+      
+      .text-danger {
+        color: #e74c3c !important;
+      }
+    }
+    
+    .form-control {
+      background-color: #2a2a2a !important;
+      border: 1px solid #424b57 !important;
+      color: #ffffff !important;
+      border-radius: 6px !important;
+      padding: 0.75rem !important;
+      
+      &:focus {
+        background-color: #2a2a2a !important;
+        border-color: var(--primary-color) !important;
+        box-shadow: 0 0 0 0.2rem rgba(139, 4, 245, 0.25) !important;
+        color: #ffffff !important;
+      }
+      
+      &::placeholder {
+        color: #9ca3af !important;
+      }
+    }
+    
+    .form-check {
+      .form-check-input {
+        background-color: #2a2a2a !important;
+        border-color: #424b57 !important;
+        
+        &:checked {
+          background-color: var(--primary-color) !important;
+          border-color: var(--primary-color) !important;
+        }
+        
+        &:focus {
+          box-shadow: 0 0 0 0.2rem rgba(139, 4, 245, 0.25) !important;
+        }
+      }
+      
+      .form-check-label {
+        color: #e0e0e0 !important;
+        cursor: pointer;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+      }
+    }
+  }
+  
+  // .btn.bg-yellow {
+  //   background-color: #dfb916 !important;
+  //   border-color: #dfb916 !important;
+  //   color: #000000 !important;
+  //   font-weight: 600 !important;
+  //   padding: 0.75rem 1.5rem !important;
+  //   border-radius: 6px !important;
+  //   transition: all 0.3s ease !important;
+    
+  //   &:hover:not(:disabled) {
+  //     background-color: #c7a613 !important;
+  //     border-color: #c7a613 !important;
+  //     transform: translateY(-1px);
+  //   }
+    
+  //   &:disabled {
+  //     background-color: #6b7280 !important;
+  //     border-color: #6b7280 !important;
+  //     color: #9ca3af !important;
+  //     cursor: not-allowed !important;
+  //     transform: none !important;
+  //   }
+    
+  //   .pi-spinner {
+  //     animation: spin 1s linear infinite;
+  //   }
+  // }
+}
+
+.alert {
+  background-color: rgba(59, 130, 246, 0.1) !important;
+  border: 1px solid rgba(59, 130, 246, 0.3) !important;
+  color: #93c5fd !important;
+  border-radius: 6px !important;
+  padding: 0.75rem !important;
+  
+  .pi-info-circle {
+    color: #3b82f6 !important;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Loading States */
+.text-muted {
+  color: #9ca3af !important;
+  
+  .pi-spinner {
+    color: var(--primary-color) !important;
+    animation: spin 1s linear infinite;
+  }
+}

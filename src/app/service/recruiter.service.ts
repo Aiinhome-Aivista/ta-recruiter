@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { GETurls, POSTurls } from '../config';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
@@ -20,7 +20,7 @@ export interface LoginResponse {
   providedIn: 'root',
 })
 export class RecruiterService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   private selectedJobSubject = new BehaviorSubject<any>(null);
   selectedJob$ = this.selectedJobSubject.asObservable();
@@ -118,11 +118,19 @@ export class RecruiterService {
     return this.http.get(GETurls.getShortlistedCandidates(jobId));
   }
 
-  // searchHMByJobId(jobId: string) {
-  //   return this.http.get(`${GETurls.searchHMByJobId}?jobId=${jobId}`);
-  // }
-  // service
+  getJobDescription(jobId: number) {
+    return this.http.get(GETurls.getJobDescriptionData(jobId));
+  }
+
+  jobSearch(query: string) {
+    let params = new HttpParams();
+    if (query != null && query !== '') {
+      params = params.set('search', query);
+    }
+    return this.http.get(GETurls.jobSearch, { params });
+  }
+
   searchHMByJobId(id: string) {
-    return this.http.post(`${GETurls.searchHMByJobId}`, { id });
+    return this.http.post(GETurls.searchHMByJobId, { id });
   }
 }

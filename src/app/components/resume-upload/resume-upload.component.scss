@@ -244,6 +244,11 @@
   color: #ffffff !important;
 }
 
+::ng-deep .p-autocomplete-option-selected {
+    background: #878787 !important;
+    color: var(--p-autocomplete-option-selected-color);
+}
+
 ::ng-deep .p-autocomplete {
   width: 100%;
 }
@@ -262,7 +267,7 @@
 
 ::ng-deep .p-inputtext:disabled {
   background: #71717a !important;
-  color: #a1a1aa !important;
+  color: #dfe20b !important;
 }
 
 .text-danger {

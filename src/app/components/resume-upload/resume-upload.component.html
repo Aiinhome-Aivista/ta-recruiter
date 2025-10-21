@@ -2,7 +2,7 @@
   <div class="loader-overlay" *ngIf="loading">
     <p-progressSpinner strokeWidth="2" fill="transparent"></p-progressSpinner>
   </div>
-  
+
   <div class="top">
     <img src="assets/icons/fi_arrow-left.svg" alt="" (click)="goBack()" />
     <p>
@@ -11,7 +11,7 @@
     </p>
   </div>
   <div class="left"></div>
-  
+
   <div class="card main-card bg-dark text-white">
     <h4 class="header">Upload Resume</h4>
 
@@ -20,48 +20,38 @@
       <div class="col-md-6 col-sm-12 left-box">
         <div class="input-fild row">
           <div class="col-md-6 col-sm-12">
-            <label for="jobid"
-              >Job ID <small class="text-danger">*</small></label
-            >
+            <label for="jobid">
+              Job <small class="text-danger">*</small>
+            </label>
+
             <form [formGroup]="formGroup">
-              <p-autocomplete
-                formControlName="selectedJob"
-                [suggestions]="filteredJobs"
-                (completeMethod)="filterJob($event)"
-                field="id"
-              >
+              <p-autocomplete #ac formControlName="selectedJob" [suggestions]="filteredJobs"
+                (completeMethod)="filterJob($event)" (onDropdownClick)="onJobDropdownClick()" field="title"
+                [dropdown]="true" [minLength]="0" appendTo="body" [emptyMessage]="''">
+                <ng-template let-job pTemplate="item">
+                  <div>
+                    <div><strong>{{ job.id }} - {{ job.title }}</strong></div>
+                  </div>
+                </ng-template>
               </p-autocomplete>
             </form>
+
 
             <small *ngIf="showJobIdError" class="text-danger">
               Job ID is required
             </small>
           </div>
+
           <div class="col-md-6 col-sm-12">
-            <label for="username"
-              >Hiring Manager <small class="text-danger">*</small></label
-            >
-            <input
-              type="text"
-              class="w-100"
-              pInputText
-              readonly
-              [disabled]="true"
-              [(ngModel)]="hiringManager"
-            />
+            <label for="username">Hiring Manager <small class="text-danger">*</small></label>
+            <input type="text" class="w-100" pInputText readonly [disabled]="true" [(ngModel)]="hiringManager" />
           </div>
         </div>
         <!-- Upload Area -->
         <div class="upload-area">
           <div class="file-drop-zone">
-            <input
-              type="file"
-              id="fileUpload"
-              (change)="onFileSelected($event)"
-              accept=".pdf,.docx,.doc"
-              multiple
-              hidden
-            />
+            <input type="file" id="fileUpload" (change)="onFileSelected($event)" accept=".pdf,.docx,.doc" multiple
+              hidden />
             <label for="fileUpload" class="upload-label">
               <img src="assets/icons/upload-cloud.svg" alt="" class="mx-auto" />
               <p class="btn-drop">Drop file or browse</p>
@@ -87,10 +77,8 @@
         <p class="sub-header">Uploaded Resume</p>
 
         <!-- No File Selected Section -->
-        <div
-          *ngIf="uploadedFiles.length === 0"
-          class="no-file-select d-flex flex-column align-items-center justify-content-center"
-        >
+        <div *ngIf="uploadedFiles.length === 0"
+          class="no-file-select d-flex flex-column align-items-center justify-content-center">
           <img src="assets/icons/No Results.svg" alt="No Files" />
           <p class="nofile-msg">Upload resumes to preview the document</p>
         </div>
@@ -99,25 +87,15 @@
         <div *ngIf="uploadedFiles.length > 0" class="file-preview">
           <ul class="list-group">
             <li *ngFor="let file of uploadedFiles" class="mb-2">
-              <div
-                class="list-group-item bg-dark text-white d-flex justify-content-between align-items-center cvs"
-              >
+              <div class="list-group-item bg-dark text-white d-flex justify-content-between align-items-center cvs">
                 <div class="img-fild d-flex align-items-center w-75">
                   <img src="assets/icons/group.svg" alt="File Icon" />
                   <p class="file-name ps-2">{{ file.name }}</p>
                 </div>
 
                 <div class="actions d-flex align-items-center gap-2">
-                  <img
-                    src="assets/icons/eye.svg"
-                    alt="view"
-                    (click)="previewFile(file)"
-                  />
-                  <img
-                    src="assets/icons/rating.svg"
-                    alt="delete"
-                    (click)="removeFile(file)"
-                  />
+                  <img src="assets/icons/eye.svg" alt="view" (click)="previewFile(file)" />
+                  <img src="assets/icons/rating.svg" alt="delete" (click)="removeFile(file)" />
                 </div>
               </div>
             </li>
