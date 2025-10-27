@@ -64,6 +64,9 @@ export class ResumeUploadComponent implements OnInit, OnDestroy {
   cachedJobs: Job[] = [];
   loading: boolean = false;
   pendingDropdownRequest = false;
+  isDragOver = false;
+  private readonly MAX_FILE_SIZE = 25 * 1024 * 1024;
+
 
   private searchQuery$ = new Subject<string>();
   private searchSub?: Subscription;
@@ -167,7 +170,7 @@ export class ResumeUploadComponent implements OnInit, OnDestroy {
 
     if (!query) {
       if (this.cachedJobs && this.cachedJobs.length > 0) {
-        this.filteredJobs = [...this.cachedJobs]; 
+        this.filteredJobs = [...this.cachedJobs];
         this.cd.detectChanges();
       } else {
         this.filteredJobs = [];
@@ -226,14 +229,125 @@ export class ResumeUploadComponent implements OnInit, OnDestroy {
 
   onFileSelected(event: Event): void {
     const target = event.target as HTMLInputElement;
-    if (target.files) {
-      const selectedFiles = Array.from(target.files).filter((file) =>
-        this.isSupportedFileType(file.type)
-      );
+    if (!target.files) return;
 
-      this.addUniqueFiles(selectedFiles);
+    const selectedFiles = Array.from(target.files);
+    // Filter out invalid mime types and too-large files early with friendly messages
+    const validFiles: File[] = [];
+    selectedFiles.forEach(file => {
+      if (!this.isSupportedFileType(file.type)) {
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Invalid Format',
+          detail: `${file.name} is not a supported format.`,
+        });
+        return;
+      }
+      if (file.size > this.MAX_FILE_SIZE) {
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'File Too Large',
+          detail: `${file.name} exceeds 25 MB.`,
+        });
+        return;
+      }
+      validFiles.push(file);
+    });
+
+    if (validFiles.length) {
+      this.addUniqueFiles(validFiles);
+      this.cd.detectChanges();
+    }
+
+    // Clear input so same file can be selected again if needed
+    target.value = '';
+  }
+
+  // Drag handlers for the drop zone
+  onDragOver(evt: DragEvent): void {
+    evt.preventDefault();
+    evt.stopPropagation();
+    this.isDragOver = true;
+  }
+
+  onDragLeave(evt: DragEvent): void {
+    evt.preventDefault();
+    evt.stopPropagation();
+    // only clear visual state when leaving drop zone
+    this.isDragOver = false;
+  }
+
+  onDrop(evt: DragEvent): void {
+    evt.preventDefault();
+    evt.stopPropagation();
+    this.isDragOver = false;
+
+    const dt = evt.dataTransfer;
+    if (!dt) return;
+
+    // Prefer files list from DataTransfer; if items available, use them
+    if (dt.files && dt.files.length > 0) {
+      this.handleDroppedFileList(dt.files);
+    } else if (dt.items && dt.items.length > 0) {
+      // Fallback for browsers that populate items
+      const files: File[] = [];
+      for (let i = 0; i < dt.items.length; i++) {
+        const item = dt.items[i];
+        if (item.kind === 'file') {
+          const file = item.getAsFile();
+          if (file) files.push(file);
+        }
+      }
+      if (files.length) this.handleDroppedFileList(files as any as FileList);
     }
   }
+
+  private handleDroppedFileList(fileList: FileList | File[]): void {
+    // Normalize to array
+    const filesArray: File[] = Array.isArray(fileList)
+      ? fileList
+      : Array.from(fileList);
+
+    const validFiles: File[] = [];
+
+    filesArray.forEach(file => {
+      // Some browsers may not set MIME type for .doc/.docx consistently, so allow fallback by extension
+      const mimeOk = this.isSupportedFileType(file.type) || this.hasAllowedExtension(file.name);
+      if (!mimeOk) {
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Invalid Format',
+          detail: `${file.name} is not a supported format.`,
+        });
+        return;
+      }
+
+      if (file.size > this.MAX_FILE_SIZE) {
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'File Too Large',
+          detail: `${file.name} exceeds 25 MB.`,
+        });
+        return;
+      }
+
+      validFiles.push(file);
+    });
+
+    if (validFiles.length) {
+      this.addUniqueFiles(validFiles);
+      // ensure UI reflects new files
+      this.cd.detectChanges();
+    }
+  }
+
+  // small helper to check extension when MIME is absent/incorrect
+  private hasAllowedExtension(filename: string): boolean {
+    const ext = (filename.split('.').pop() || '').toLowerCase();
+    return ['pdf', 'doc', 'docx'].includes(ext);
+  }
+
+
 
   private isSupportedFileType(type: string): boolean {
     return [
@@ -243,17 +357,27 @@ export class ResumeUploadComponent implements OnInit, OnDestroy {
     ].includes(type);
   }
 
+
   private addUniqueFiles(files: File[]): void {
     files.forEach((file) => {
-      if (
-        !this.uploadedFiles.some(
-          (existingFile) => existingFile.name === file.name
-        )
-      ) {
-        this.uploadedFiles.push(file);
+      // skip duplicates by name + size
+      const exists = this.uploadedFiles.some(
+        (existingFile) => existingFile.name === file.name && existingFile.size === file.size
+      );
+      if (exists) return;
+
+      // Extra safety checks (should already be validated upstream)
+      if (!this.isSupportedFileType(file.type) && !this.hasAllowedExtension(file.name)) {
+        return;
       }
+      if (file.size > this.MAX_FILE_SIZE) {
+        return;
+      }
+
+      this.uploadedFiles.push(file);
     });
   }
+
 
   removeFile(file: File): void {
     this.uploadedFiles = this.uploadedFiles.filter((f) => f !== file);

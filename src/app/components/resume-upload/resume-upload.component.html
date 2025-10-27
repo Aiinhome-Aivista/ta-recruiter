@@ -49,7 +49,8 @@
         </div>
         <!-- Upload Area -->
         <div class="upload-area">
-          <div class="file-drop-zone">
+          <div class="file-drop-zone" [class.drag-over]="isDragOver" (dragover)="onDragOver($event)"
+            (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
             <input type="file" id="fileUpload" (change)="onFileSelected($event)" accept=".pdf,.docx,.doc" multiple
               hidden />
             <label for="fileUpload" class="upload-label">

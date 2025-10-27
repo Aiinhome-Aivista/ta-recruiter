@@ -1,20 +1,29 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RecruiterService } from '../../../service/recruiter.service';
 import { TooltipModule } from 'primeng/tooltip';
 import { Subscription } from 'rxjs';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { CandidateInfoComponent } from "../candidate-info/candidate-info.component";
+import { MessageService } from "primeng/api";
 
 @Component({
   selector: 'app-candidate-list',
   standalone: true,
-  imports: [CommonModule, TooltipModule, ProgressSpinnerModule],
+  imports: [CommonModule, TooltipModule, ProgressSpinnerModule, CandidateInfoComponent],
   templateUrl: './candidate-list.component.html',
   styleUrls: ['./candidate-list.component.scss'],
+  providers: [MessageService],
 })
 export class CandidateListComponent implements OnInit, OnDestroy {
+  @ViewChild(CandidateInfoComponent)
+  candidateInfoComponent!: CandidateInfoComponent;
+
   activeTab: string = 'Shortlisted';
+  header: any;
+  status: any;
   selectedJob: any = null;
+  selectedCandidate: any = null;
   private jobSubscription!: Subscription;
   allCandidates: any[] = [];
   shortlistedCandidates: any[] = [];
@@ -22,7 +31,7 @@ export class CandidateListComponent implements OnInit, OnDestroy {
   jobDescription: any = null;
   jobDescriptionLoading: boolean = false;
 
-  constructor(private recruiterService: RecruiterService) { }
+  constructor(private recruiterService: RecruiterService, private messageService: MessageService,) { }
 
   ngOnInit() {
     this.jobSubscription = this.recruiterService.selectedJob$.subscribe(
@@ -118,5 +127,35 @@ export class CandidateListComponent implements OnInit, OnDestroy {
     if (this.jobSubscription) {
       this.jobSubscription.unsubscribe();
     }
+  }
+
+  openModal(candidate: any) {
+    // Send both candidate data and active tab information
+    this.selectedCandidate = {
+      ...candidate,
+      activeTab: this.activeTab,
+    };
+  }
+
+  onClose(data: string) {
+    this.selectedCandidate = null;
+    if (data != "") {
+      this.header = data.split("_")[0];
+      this.status = parseInt(data.split("_")[1]);
+      if (this.status == 1)
+        this.messageService.add({
+          severity: "success",
+          summary: "Success",
+          detail: this.header,
+        });
+      else if (this.status == 0)
+        this.messageService.add({
+          severity: "error",
+          summary: "Error",
+          detail: this.header,
+        });
+    }
+    //console.log(data);
+    //if (data != '') this.Modalopen.emit(data);
   }
 }

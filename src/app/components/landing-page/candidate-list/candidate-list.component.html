@@ -4,7 +4,7 @@
   </div>
 
   <div *ngIf="!loading">
-    <div class="header">
+    <!-- <div class="header">
       <p>Job ID: #{{ selectedJob.jobId }}</p>
       <h3>{{ selectedJob.jobTitle }}</h3>
       <div class="c-info">
@@ -14,7 +14,20 @@
         </div>
         <span class="pi pi-sync" (click)="refreshList()"> </span>
       </div>
+    </div> -->
+
+    <div class="header">
+      <p>Job ID: #{{ selectedJob?.jobId }}</p>
+      <h3>{{ selectedJob?.jobTitle }}</h3>
+      <div class="c-info">
+        <div class="c-name">
+          <img [src]="'assets/icons/icon-face.svg'" alt="My Image" />
+          <h4>{{ selectedJob?.email }}</h4>
+        </div>
+        <span class="pi pi-sync" (click)="refreshList()"> </span>
+      </div>
     </div>
+
 
     <hr />
 
@@ -37,7 +50,7 @@
 
       <div class="main-candisate-card">
         <div *ngIf="shortlistedCandidates.length > 0; else noDataTemplate">
-          <div *ngFor="let candidate of shortlistedCandidates" class="candidate-card">
+          <div *ngFor="let candidate of shortlistedCandidates" class="candidate-card" (click)="openModal(candidate)">
             <div class="candidate-info">
               <div class="left-part">
                 <h3>{{ candidate?.name }}</h3>
@@ -164,5 +177,10 @@
         </div>
       </ng-template>
     </div>
+  </div>
+
+  <div class="position-absolute top-0 end-0 popup-content">
+    <app-candidate-info *ngIf="selectedCandidate" [candidate]="selectedCandidate"
+      (close)="onClose($event)"></app-candidate-info>
   </div>
 </div>

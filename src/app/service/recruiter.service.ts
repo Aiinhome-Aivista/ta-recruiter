@@ -20,6 +20,7 @@ export interface LoginResponse {
   providedIn: 'root',
 })
 export class RecruiterService {
+  jobSubscribe = new BehaviorSubject<any>(null);
   constructor(private http: HttpClient) { }
 
   private selectedJobSubject = new BehaviorSubject<any>(null);
@@ -132,5 +133,34 @@ export class RecruiterService {
 
   searchHMByJobId(id: string) {
     return this.http.post(GETurls.searchHMByJobId, { id });
+  }
+
+  candidateStatus(jobId: string, CandidateId: string) {
+    return this.http.get(GETurls.candidateStatus + jobId + '/' + CandidateId);
+  }
+
+  getInterviewInfo(jobId: string, candidateId: string) {
+    return this.http.get(`${GETurls.getInterviewInfo}${jobId}/${candidateId}`);
+  }
+
+
+  submitInterviewInfo(jsonBody: any) {
+    return this.http.post(POSTurls.submitInterviewInfo, jsonBody);
+  }
+
+  CandidateDetails(data: any) {
+    return this.http.post(POSTurls.candidateDetails, data);
+  }
+
+  getcandidateInterviewtime(jsonBody: any) {
+    return this.http.post(POSTurls.interviewSechudle, jsonBody);
+  }
+
+  callProfileUpdateJurney(data: any) {
+    return this.http.post(POSTurls.callProfileUpdateJurney, data);
+  }
+
+  sendNotification(jsonBody: any) {
+    return this.http.post(POSTurls.notificationUrl, jsonBody);
   }
 }

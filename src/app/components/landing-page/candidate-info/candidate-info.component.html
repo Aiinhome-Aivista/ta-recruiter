@@ -14,10 +14,6 @@
       <i class="pi pi-exclamation-triangle text-warning mb-3" style="font-size: 3rem;"></i>
       <h4 class="text-white mb-2">No Data Available</h4>
       <p class="text-muted mb-3">Unable to load candidate information. Please try again later.</p>
-      <!-- <button class="btn btn-outline-light" (click)="closeModal()">
-        <i class="pi pi-times me-2"></i>
-        Close
-      </button> -->
     </div>
   </div>
 
@@ -33,12 +29,9 @@
             selectedCandidateDetails?.last_name
             }}
           </h4>
-          <!-- <span *ngIf="activeTab" class="tab-indicator badge bg-info text-white px-2 py-1">
-            {{ activeTab }}
-          </span> -->
         </div>
         <span *ngIf="activeTab == 'Shortlisted'" class="rating d-flex"><img src="assets/icons/starIcon.svg" alt="" />
-          {{ candidate.star }}</span>
+          {{ candidate.rating }}</span>
       </div>
       <img (click)="closeModal()" src="assets/icons/+ (1).svg" alt="" class="cross" />
     </div>
@@ -104,15 +97,6 @@
     </div>
 
     <div class="scroll-area pb-4">
-      <!-- <div *ngIf="isInterviewScheduled" class="interview-schedule my-4">
-        <div>
-          <p class="mb-0">Interview scheduled on -</p>
-          <p class="text-date mb-0">{{ interviewTime }}</p>
-        </div>
-        <div>
-          <button class="btn button bg-yellow">Join</button>
-        </div>
-      </div> -->
 
       <div class="skill-card mb-4">
         <hr />
@@ -148,7 +132,6 @@
               {{ selectedCandidateDetails?.education }}
             </p>
           </div>
-          <!-- <p>Activities and societies: Football team head</p> -->
         </div>
 
         <hr />
@@ -166,7 +149,6 @@
               {{ selectedCandidateDetails?.certification }}
             </p>
           </div>
-          <!-- <p>Activities and societies: Football team head</p> -->
         </div>
 
         <hr />
@@ -188,146 +170,20 @@
               " class="skill-pill me-2 mb-2 bg-yellow">
               {{ skill }}
             </div>
-
-            <!-- Show "+count" if there are more than 3 skills -->
-            <!-- <div
-              *ngIf="selectedCandidateDetails?.skills?.split(',').length > 2"
-              class="skill-pill2 position-relative"
-              (mouseenter)="showHiddenSkills = true"
-              (mouseleave)="showHiddenSkills = false"
-            >
-              +{{ candidate?.skills?.split(",").length - 2 }}
-
-             
-              <div
-                class="hidden-skills bg-light p-2 position-absolute"
-                *ngIf="showHiddenSkills"
-              >
-                <div
-                  *ngFor="
-                    let skill of selectedCandidateDetails?.skills?.split(',')
-                      | slice : 2
-                  "
-                  class="more-pill"
-                >
-                  {{ skill }}
-                </div>
-              </div>
-            </div> -->
-            <!-- <div
-              *ngIf="selectedCandidateDetails?.skills?.split(',').length > 2"
-              class="skill-pill2 position-relative"
-              pTooltip="{{ getHiddenSkillsTooltip(selectedCandidateDetails) }}"
-            >
-              +{{ selectedCandidateDetails?.skills?.split(",").length - 2 }}
-            </div> -->
-
           </div>
         </div>
 
 
-        <div *ngIf="activeTab == 'Shortlisted' && hasInterviewScheduled()" class="interview-sections mt-4">
-          
+        <div *ngIf="activeTab == 'Shortlisted'" class="interview-sections mt-4">
+
           <!-- Form loading state -->
           <div *ngIf="isInterviewFormLoading" class="text-center py-3">
             <i class="pi pi-spin pi-spinner"></i>
             <p class="text-muted mt-2">Loading interview information...</p>
           </div>
-          
-          <!-- Form validation status -->
-          <!-- <div *ngIf="!isInterviewFormLoading && !isInterviewFormValid()" class="alert alert-info mb-3">
-            <i class="pi pi-info-circle me-2"></i>
-            <small>Please fill all required fields to submit interview feedback.</small>
-          </div> -->
-          <!-- Interview Join Status -->
-          <div class="form-group mb-3">
-            <h6 class="form-label d-flex align-items-center gap-2">
-              <div class="icon1">
-                <img src="assets/icons/person_check.svg" alt="" />
-              </div>
-              <p>Interview Joining Status <span class="text-danger">*</span></p>
-            </h6>
-            <div class="d-flex gap-3 align-items-center">
-              <div class="form-check">
-                <input class="form-check-input" type="radio" id="joinAttend" name="joinStatus" value="Attend"
-                  [(ngModel)]="interviewData.joinStatus" (change)="onJoinStatusChange()"/>
-                <label class="form-check-label info-submit-form" for="joinAttend">Attended</label>
-              </div>
-
-              <div class="form-check">
-                <input class="form-check-input" type="radio" id="joinNotAttend" name="joinStatus" value="Not Attend"
-                  [(ngModel)]="interviewData.joinStatus" (change)="onJoinStatusChange()"/>
-                <label class="form-check-label info-submit-form" for="joinNotAttend">Not Attended</label>
-              </div>
-            </div>
-          </div>
-
-          <!-- Interview Feedback (only when Attended) -->
-          <div class="form-group mb-3" *ngIf="interviewData.joinStatus === 'Attend'">
-            <h6 class="form-label fw-bold mb-2 d-flex align-items-center gap-2">
-              <span class="icon1">
-                <i class="pi pi-comment"></i>
-              </span>
-              <p>Interview Feedback <span class="text-danger">*</span></p>
-            </h6>
-            <textarea class="form-control bg-dark text-white" rows="4" placeholder="Write interview feedback/result..."
-              [(ngModel)]="interviewData.feedback" name="feedback"></textarea>
-          </div>
-
-          <!-- Selection Status (only when Attended) -->
-          <div class="form-group mb-3" *ngIf="interviewData.joinStatus === 'Attend'">
-            <h6 class="form-label fw-bold d-flex align-items-center gap-2">
-              <div class="icon1"><img src="assets/icons/approve_reject_confirm_icon1.svg" alt=""></div>
-              <p>Selection Status <span class="text-danger">*</span></p>
-            </h6>
-            <div class="d-flex gap-3 align-items-center">
-              <div class="form-check">
-                <input class="form-check-input" type="radio" id="selSelected" name="selectionStatus" value="Selected"
-                  [(ngModel)]="interviewData.selectionStatus" />
-                <label class="form-check-label info-submit-form" for="selSelected">Selected</label>
-              </div>
-
-              <div class="form-check">
-                <input class="form-check-input" type="radio" id="selRejected" name="selectionStatus" value="Rejected"
-                  [(ngModel)]="interviewData.selectionStatus" />
-                <label class="form-check-label info-submit-form" for="selRejected">Rejected</label>
-              </div>
-
-              <div class="form-check">
-                <input class="form-check-input" type="radio" id="selUnderReview" name="selectionStatus"
-                  value="Under Review" [(ngModel)]="interviewData.selectionStatus" />
-                <label class="form-check-label info-submit-form" for="selUnderReview">Under Review</label>
-              </div>
-            </div>
-          </div>
-
-          <!-- Submit -->
-          <div class="d-flex justify-content-start gap-2 mt-2">
-            <button 
-              type="button" 
-              class="btn bg-yellow"
-              (click)="submitInterview()"
-              [disabled]="!isSubmitButtonEnabled()">
-              Submit Feedback
-            </button>
-          </div>
         </div>
 
 
-      </div>
-      <div *ngIf="isSelected" class="comment-section mt-4">
-        <!-- <div class="comment-section mt-4">  -->
-        <label for="comment">Add Comments (if any)</label>
-        <textarea id="comment" name="comment" rows="4"></textarea>
-        <p-toast position="bottom-center"> </p-toast>
-        <div class="btn-group2 d-flex justify-content-end">
-          <button type="button" class="btn btn-outline-danger me-2" (click)="onReject()">
-            Reject
-          </button>
-          <button type="button" class="btn btn-success" (click)="onApprove()">
-            Approve
-          </button>
-        </div>
       </div>
     </div>
   </div>
