@@ -359,14 +359,25 @@ export class ResumeUploadComponent implements OnInit, OnDestroy {
 
 
   private addUniqueFiles(files: File[]): void {
-    files.forEach((file) => {
-      // skip duplicates by name + size
+    const availableSlots = 5 - this.uploadedFiles.length;
+
+    if (availableSlots <= 0) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Limit Reached',
+        detail: 'You can upload a maximum of 5 files.',
+      });
+      return;
+    }
+
+    const filesToAdd = files.slice(0, availableSlots);
+
+    filesToAdd.forEach((file) => {
       const exists = this.uploadedFiles.some(
         (existingFile) => existingFile.name === file.name && existingFile.size === file.size
       );
       if (exists) return;
 
-      // Extra safety checks (should already be validated upstream)
       if (!this.isSupportedFileType(file.type) && !this.hasAllowedExtension(file.name)) {
         return;
       }
@@ -376,6 +387,15 @@ export class ResumeUploadComponent implements OnInit, OnDestroy {
 
       this.uploadedFiles.push(file);
     });
+
+    // If user tried to add more than 5 total, show message
+    if (files.length > filesToAdd.length) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Partial Upload',
+        detail: `Only ${availableSlots} more file${availableSlots > 1 ? 's' : ''} allowed (max 5 total).`,
+      });
+    }
   }
 
 

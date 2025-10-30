@@ -1,7 +1,5 @@
-// let baseUrl =
-//   'https://adani-hiring.southindia.cloudapp.azure.com/adani-hiring-hm-assessment/scenarioassessmentservice/';
-
 let baseUrl = 'http://122.163.121.176:3008/'
+// let baseUrl = 'https://aiinhome.com/crewnest/';
 let NotificationServices = 'http://122.163.121.176:3016';
 
 

@@ -89,6 +89,7 @@ export class CandidateInfoComponent {
 
     const jsonBody = {
       email: this.candidate.email,
+      jobId: this.candidate.jobId
     };
     this.recruiterService.CandidateDetails(jsonBody).subscribe({
       next: (res: any) => {

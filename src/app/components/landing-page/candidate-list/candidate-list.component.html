@@ -28,9 +28,6 @@
       </div>
     </div>
 
-
-    <hr />
-
     <!-- Navigation Tabs -->
     <nav class="nav-bar mb-4 d-flex justify-content-between">
       <div class="nav-btn">
@@ -46,7 +43,6 @@
 
     <!-- Candidates List Tab -->
     <div *ngIf="activeTab === 'Shortlisted'">
-      <div class="List">List of Candidates</div>
 
       <div class="main-candisate-card">
         <div *ngIf="shortlistedCandidates.length > 0; else noDataTemplate">
