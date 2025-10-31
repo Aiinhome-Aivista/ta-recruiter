@@ -1,5 +1,6 @@
-let baseUrl = 'http://122.163.121.176:3008/'
-// let baseUrl = 'https://aiinhome.com/crewnest/';
+// let baseUrl = 'http://122.163.121.176:3008/'
+let baseUrl = 'https://aiinhome.com/crewnest/';
+// let baseUrl = 'https://aiinhome.com/crewnest_dev/';
 let NotificationServices = 'http://122.163.121.176:3016';
 
 

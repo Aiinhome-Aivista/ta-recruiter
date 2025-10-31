@@ -41,7 +41,7 @@ body {
   font-family: "Inter", sans-serif !important;
   font-optical-sizing: auto;
   font-style: normal;
-  background-image: url(/assets/icons/candidateBG.svg);
+  // background-image: url(/assets/icons/candidateBG.svg);
   // background-size: cover;
   background-position: center;
   font-variation-settings: "wdth" 100;
@@ -145,6 +145,13 @@ textarea::placeholder {
   --primary-color: #dfb916;
   --icon-color: black;
   --dark-gradient: linear-gradient(
+    135deg,
+    #0c0c0c 0%,
+    #1a1a2e 50%,
+    #16213e 100%
+  );
+
+  --login-gradient: linear-gradient(
     135deg,
     #0c0c0c 0%,
     #1a1a2e 50%,
